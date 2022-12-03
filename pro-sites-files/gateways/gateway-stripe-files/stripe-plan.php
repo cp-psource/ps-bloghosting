@@ -6,7 +6,7 @@ defined( 'WPINC' ) || die;
 /**
  * The stripe plans functionality of the plugin.
  *
- * @link   https://premium.wpmudev.org/project/pro-sites
+ * @link   https://n3rds.work/project/pro-sites
  * @since  3.6.1
  *
  * @author Joel James <joel@incsub.com>

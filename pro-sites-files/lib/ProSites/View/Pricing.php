@@ -775,7 +775,7 @@ if ( ! class_exists( 'ProSites_View_Pricing' ) ) {
 								<td><textarea name="new-feature-description"></textarea></td>
 								<td><textarea name="new-feature-text"></textarea></td>
 								<td><input type="button" class="button" name="add-feature-button"
-								           id="add-feature-button" value="Add"/></td>
+								           id="add-feature-button" value="Hinzufügen"/></td>
 
 							</tr>
 							</tbody>

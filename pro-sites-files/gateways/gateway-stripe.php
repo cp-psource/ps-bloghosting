@@ -1185,7 +1185,7 @@ class ProSites_Gateway_Stripe {
 	 *
 	 * @return string
 	 */
-	public static function render_gateway( $render_data = array(), $args, $blog_id, $domain ) {
+	public static function render_gateway( $domain, $blog_id, $args, $render_data = array() ) {
 		global $psts, $current_user;
 
 		// First we need to clear caches.
@@ -1290,7 +1290,7 @@ class ProSites_Gateway_Stripe {
 	 *
 	 * @return void|bool
 	 */
-	public static function process_checkout_form( $data = array(), $blog_id, $domain ) {
+	public static function process_checkout_form( $domain, $blog_id, $data = array() ) {
 		// First we need to clear caches.
 		ProSites_Helper_Cache::refresh_cache();
 
