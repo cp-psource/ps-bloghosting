@@ -1,7 +1,7 @@
 <?php
 
 /*
-Pro Sites (Gateway: Paypal Express/Pro Payment Gateway)
+Bloghosting (Gateway: Paypal Express/Pro Payment Gateway)
 */
 
 class ProSites_Gateway_PayPalExpressPro {
@@ -63,17 +63,17 @@ class ProSites_Gateway_PayPalExpressPro {
 
 		add_action( 'psts_checkout_page_load', array( $this, 'process_checkout_form' ) );
 		self::$pending_str = array(
-			'address'        => __( 'The payment is pending because your customer did not include a confirmed shipping address and your Payment Receiving Preferences is set such that you want to manually accept or deny each of these payments. To change your preference, go to the Preferences  section of your Profile.', 'psts' ),
-			'authorization'  => __( 'The payment is pending because it has been authorized but not settled. You must capture the funds first.', 'psts' ),
-			'echeck'         => __( 'The payment is pending because it was made by an eCheck that has not yet cleared.', 'psts' ),
-			'intl'           => __( 'The payment is pending because you hold a non-U.S. account and do not have a withdrawal mechanism. You must manually accept or deny this payment from your Account Overview.', 'psts' ),
-			'multi_currency' => __( 'You do not have a balance in the currency sent, and you do not have your Payment Receiving Preferences set to automatically convert and accept this payment. You must manually accept or deny this payment.', 'psts' ),
-			'order'          => __( 'The payment is pending because it is part of an order that has been authorized but not settled.', 'psts' ),
-			'paymentreview'  => __( 'The payment is pending while it is being reviewed by PayPal for risk.', 'psts' ),
-			'unilateral'     => __( 'The payment is pending because it was made to an email address that is not yet registered or confirmed.', 'psts' ),
-			'upgrade'        => __( 'The payment is pending because it was made via credit card and you must upgrade your account to Business or Premier status in order to receive the funds. It can also mean that you have reached the monthly limit for transactions on your account.', 'psts' ),
-			'verify'         => __( 'The payment is pending because you are not yet verified. You must verify your account before you can accept this payment.', 'psts' ),
-			'other'          => __( 'The payment is pending for an unknown reason. For more information, contact PayPal customer service.', 'psts' ),
+			'address'        => __( 'Die Zahlung steht aus, weil Dein Kunde keine bestätigte Lieferadresse angegeben hat und Deine Zahlungsempfangseinstellungen so eingestellt sind, dass Du jede dieser Zahlungen manuell akzeptieren oder ablehnen möchtest. Um Deine Einstellungen zu ändern, gehe zum Abschnitt Einstellungen Deines Profils.', 'psts' ),
+			'authorization'  => __( 'Die Zahlung ist ausstehend, weil sie autorisiert, aber noch nicht abgewickelt wurde. Du musst das Geld zuerst erfassen.', 'psts' ),
+			'echeck'         => __( 'Die Zahlung ist ausstehend, weil sie von einem eCheck getätigt wurde, der noch nicht verrechnet wurde.', 'psts' ),
+			'intl'           => __( 'Die Zahlung steht noch aus, weil Du ein Nicht-US-Konto besitzt und keinen Auszahlungsmechanismus hast. Du musst diese Zahlung in Deiner Kontoübersicht manuell akzeptieren oder ablehnen.', 'psts' ),
+			'multi_currency' => __( 'Du hast kein Guthaben in der gesendeten Währung und Du hast Deine Zahlungsempfangseinstellungen nicht so eingestellt, dass diese Zahlung automatisch umgerechnet und akzeptiert wird. Du musst diese Zahlung manuell annehmen oder ablehnen.', 'psts' ),
+			'order'          => __( 'Die Zahlung ist ausstehend, weil sie Teil einer Bestellung ist, die autorisiert, aber noch nicht abgerechnet wurde.', 'psts' ),
+			'paymentreview'  => __( 'Die Zahlung steht noch aus, während sie von PayPal auf Risiken geprüft wird.', 'psts' ),
+			'unilateral'     => __( 'Die Zahlung steht noch aus, da sie an eine E-Mail-Adresse gesendet wurde, die noch nicht registriert oder bestätigt ist.', 'psts' ),
+			'upgrade'        => __( 'Die Zahlung ist ausstehend, da sie per Kreditkarte getätigt wurde und Du Dein Konto auf den Business- oder Premier-Status upgraden musst, um das Geld zu erhalten. Es kann auch bedeuten, dass Du das monatliche Limit für Transaktionen auf Deinem Konto erreicht hast.', 'psts' ),
+			'verify'         => __( 'Die Zahlung steht noch aus, da Du noch nicht verifiziert bist. Du musst Dein Konto verifizieren, bevor Du diese Zahlung akzeptieren kannst.', 'psts' ),
+			'other'          => __( 'Die Zahlung steht aus einem unbekannten Grund aus. Wende Dich für weitere Informationen an den PayPal-Kundenservice.', 'psts' ),
 			'*'              => ''
 		);
 	}
@@ -87,7 +87,7 @@ class ProSites_Gateway_PayPalExpressPro {
 		//check if pro/express user
 		if ( $profile_id ) {
 
-			$resArray = PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', __( 'Your subscription was canceled because the blog was deleted.', 'psts' ) );
+			$resArray = PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', __( 'Dein Abonnement wurde gekündigt, weil der Blog gelöscht wurde.', 'psts' ) );
 
 			if ( $resArray['ACK'] == 'Success' || $resArray['ACK'] == 'SuccessWithWarning' ) {
 				//record stat
@@ -100,11 +100,11 @@ class ProSites_Gateway_PayPalExpressPro {
 				update_blog_option( $blog_id, 'psts_is_canceled', 1 );
 
 				$end_date = date_i18n( get_option( 'date_format' ), $psts->get_expire( $blog_id ) );
-				$psts->log_action( $blog_id, sprintf( __( 'Subscription successfully cancelled by %1$s. They should continue to have access until %2$s', 'psts' ), $current_user->display_name, $end_date ) );
+				$psts->log_action( $blog_id, sprintf( __( 'Abonnement  von %1$s erfolgreich gekündigt. Du solltest weiterhin bis zum %2$s Zugriff haben', 'psts' ), $current_user->display_name, $end_date ) );
 
 				//Do not display message for add action
 				if ( $display_message ) {
-					self::$cancel_message = '<div id="message" class="updated fade"><p>' . sprintf( __( 'Your %1$s subscription has been canceled. You should continue to have access until %2$s.', 'psts' ), $site_name . ' ' . $psts->get_setting( 'rebrand' ), $end_date ) . '</p></div>';
+					self::$cancel_message = '<div id="message" class="updated fade"><p>' . sprintf( __( 'Dein %1$s-Abonnement wurde gekündigt. Du solltest bis zum %2$s weiterhin Zugriff haben.', 'psts' ), $site_name . ' ' . $psts->get_setting( 'rebrand' ), $end_date ) . '</p></div>';
 				}
 			}
 		}
@@ -234,7 +234,7 @@ class ProSites_Gateway_PayPalExpressPro {
 			$content .= '<div id="psts-processcard-error" class="psts-error">' . $errmsg . '</div>';
 		}
 
-		$content .= '<input type="image" src="' . $button_url . '" border="0" name="paypal_checkout" alt="' . __( 'PayPal - The safer, easier way to pay online!', 'psts' ) . '">
+		$content .= '<input type="image" src="' . $button_url . '" border="0" name="paypal_checkout" alt="' . __( 'PayPal - Die sicherere und einfachere Art, online zu bezahlen!', 'psts' ) . '">
 			</div>';
 
 		if ( $psts->get_setting( 'pypl_enable_pro' ) ) {
@@ -283,14 +283,14 @@ class ProSites_Gateway_PayPalExpressPro {
 			}
 
 			$content .= '<div id="psts-cc-checkout">
-			<h2>' . __( 'Or Pay Directly By Credit Card', 'psts' ) . '</h2>';
+			<h2>' . __( 'Oder zahle direkt per Kreditkarte', 'psts' ) . '</h2>';
 			$content .= self::nonce_field();
 			$content .= '<input type="hidden" name="cc_form" value="1" />
 			<table id="psts-cc-table">
 				<tbody>
 					<tr>
 						<td colspan="2">
-							<h3>' . __( 'Credit Card Info:', 'psts' ) . '</h3>
+							<h3>' . __( 'Kreditkarteninformationen:', 'psts' ) . '</h3>
 						</td>
 					</tr>';
 
@@ -298,7 +298,7 @@ class ProSites_Gateway_PayPalExpressPro {
 
 			$content .= '<!-- Credit Card Type -->
 			         <tr>
-						<td class="pypl_label" align="right">' . __( 'Card Type:', 'psts' ) . '&nbsp;</td>
+						<td class="pypl_label" align="right">' . __( 'Kreditkarten-Typ:', 'psts' ) . '&nbsp;</td>
 						<td>' . $checkout_errors['card-type'] . '<label class="cc-image" title="Visa"><input type="radio" name="cc_card-type" value="Visa"' . ( ( $cc_cardtype == 'Visa' ) ? ' checked="checked"' : '' ) . ' /><img src="' . $img_base . 'visa.png" alt="Visa" /></label>
 			  <label class="cc-image" title="MasterCard"><input type="radio" name="cc_card-type" value="MasterCard"' . ( ( $cc_cardtype == 'MasterCard' ) ? ' checked="checked"' : '' ) . ' /><img src="' . $img_base . 'mc.png" alt="MasterCard" /></label>
 			  <label class="cc-image" title="American Express"><input type="radio" name="cc_card-type" value="Amex"' . ( ( $cc_cardtype == 'Amex' ) ? ' checked="checked"' : '' ) . ' /><img src="' . $img_base . 'amex.png" alt="American Express" /></label>
@@ -307,58 +307,58 @@ class ProSites_Gateway_PayPalExpressPro {
 			</tr>
 
 		    <tr>
-				<td class="pypl_label" align="right">' . __( 'Card Number:', 'psts' ) . '&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Kartennummer:', 'psts' ) . '&nbsp;</td>
 				<td>' . $checkout_errors['number'] . '<input name="cc_number" type="text" class="cctext" value="' . esc_attr( $cc_number ) . '" size="23" />
 				</td>
 			</tr>
 
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'Expiration Date:', 'psts' ) . '&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Ablaufdatum', 'psts' ) . '&nbsp;</td>
 				<td valign="middle">' . $checkout_errors['expiration'] . '<select name="cc_month">' . self::month_dropdown( $cc_month ) . '</select>&nbsp;/&nbsp;<select name="cc_year">' . self::year_dropdown( $cc_year ) . '</select>
 				</td>
 			</tr>
 
 			<!-- Card Security Code -->
 			<tr>
-				<td class="pypl_label" align="right"><nobr>' . __( 'Card Security Code:', 'psts' ) . '</nobr>&nbsp;</td>
-				<td valign="middle">' . $checkout_errors['cvv2'] . '<label><input name="cc_cvv2" size="5" maxlength="4" type="password" class="cctext" title="' . __( 'Please enter a valid card security code. This is the 3 digits on the signature panel, or 4 digits on the front of Amex cards.', 'psts' ) . '" />
-				<img src="' . $img_base . 'buy-cvv.gif" height="27" width="42" title="' . __( 'Please enter a valid card security code. This is the 3 digits on the signature panel, or 4 digits on the front of Amex cards.', 'psts' ) . '" /></label>
+				<td class="pypl_label" align="right"><nobr>' . __( 'Karten-Sicherheitscode:', 'psts' ) . '</nobr>&nbsp;</td>
+				<td valign="middle">' . $checkout_errors['cvv2'] . '<label><input name="cc_cvv2" size="5" maxlength="4" type="password" class="cctext" title="' . __( 'Bitte gib einen gültigen Kartensicherheitscode ein. Dies sind die 3 Ziffern auf dem Unterschriftsfeld oder 4 Ziffern auf der Vorderseite von Amex-Karten.', 'psts' ) . '" />
+				<img src="' . $img_base . 'buy-cvv.gif" height="27" width="42" title="' . __( 'Bitte gib einen gültigen Kartensicherheitscode ein. Dies sind die 3 Ziffern auf dem Unterschriftsfeld oder 4 Ziffern auf der Vorderseite von Amex-Karten.', 'psts' ) . '" /></label>
 				</td>
 			</tr>
 
 			<tr>
-				<td colspan="2"><h3>' . __( 'Billing Address:', 'psts' ) . '</h3></td>
+				<td colspan="2"><h3>' . __( 'Rechnungsadresse:', 'psts' ) . '</h3></td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'First Name:', 'psts' ) . '*&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Vorname:', 'psts' ) . '*&nbsp;</td>
 				<td>' . $checkout_errors['firstname'] . '<input name="cc_firstname" type="text" class="cctext" value="' . esc_attr( $cc_firstname ) . '" size="25" /> </td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'Last Name:', 'psts' ) . '*&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Nachname:', 'psts' ) . '*&nbsp;</td>
 				<td>' . $checkout_errors['lastname'] . '<input name="cc_lastname" type="text" class="cctext" value="' . esc_attr( $cc_lastname ) . '" size="25" /></td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'Address:', 'psts' ) . '*&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Addresse:', 'psts' ) . '*&nbsp;</td>
 				<td>' . $checkout_errors['address'] . '<input size="45" name="cc_address" type="text" class="cctext" value="' . esc_attr( $cc_address ) . '" /></td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'Address 2:', 'psts' ) . '&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Addresse 2:', 'psts' ) . '&nbsp;</td>
 				<td><input size="45" name="cc_address2" type="text" class="cctext" value="' . esc_attr( $cc_address2 ) . '" /></td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'City:', 'psts' ) . '*&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Stadt:', 'psts' ) . '*&nbsp;</td>
 				<td>' . $checkout_errors['city'] . '<input size="20" name="cc_city" type="text" class="cctext" value="' . esc_attr( $cc_city ) . '" /></td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'State/Province:', 'psts' ) . '*&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Staat/Provinz:', 'psts' ) . '*&nbsp;</td>
 				<td>' . $checkout_errors['state'] . '<input size="5" name="cc_state" type="text" class="cctext" value="' . esc_attr( $cc_state ) . '" /></td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'Postal/Zip Code:', 'psts' ) . '*&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Postleitzahl:', 'psts' ) . '*&nbsp;</td>
 				<td>' . $checkout_errors['zip'] . '<input size="10" name="cc_zip" type="text" class="cctext" value="' . esc_attr( $cc_zip ) . '" /> </td>
 			</tr>
 			<tr>
-				<td class="pypl_label" align="right">' . __( 'Country:', 'psts' ) . '*&nbsp;</td>
+				<td class="pypl_label" align="right">' . __( 'Land:', 'psts' ) . '*&nbsp;</td>
 				<td>' . $checkout_errors['country'] .
 			            '<select name="cc_country">';
 			foreach ( $psts->countries as $key => $value ) {
@@ -370,8 +370,8 @@ class ProSites_Gateway_PayPalExpressPro {
         </tbody>
     </table>
 	<p>
-		<input type="submit" id="cc_paypal_checkout" name="cc_paypal_checkout" value="' . __( 'Subscribe', 'psts' ) . ' &raquo;" class="submit-button" />
-		<div id="paypal_processing" style="display: none;float: right;"><img src="' . $img_base . 'loading.gif" /> ' . __( 'Processing...', 'psts' ) . '</div>
+		<input type="submit" id="cc_paypal_checkout" name="cc_paypal_checkout" value="' . __( 'Abonnieren', 'psts' ) . ' &raquo;" class="submit-button" />
+		<div id="paypal_processing" style="display: none;float: right;"><img src="' . $img_base . 'loading.gif" /> ' . __( 'Verarbeite...', 'psts' ) . '</div>
     </p>
 	</div>';
 		}
@@ -406,14 +406,14 @@ class ProSites_Gateway_PayPalExpressPro {
 		$output .= "<option" . ( $sel == 2 ? ' selected' : '' ) . " value='02'>02 - " . __( 'Feb', 'psts' ) . "</option>";
 		$output .= "<option" . ( $sel == 3 ? ' selected' : '' ) . " value='03'>03 - " . __( 'Mar', 'psts' ) . "</option>";
 		$output .= "<option" . ( $sel == 4 ? ' selected' : '' ) . " value='04'>04 - " . __( 'Apr', 'psts' ) . "</option>";
-		$output .= "<option" . ( $sel == 5 ? ' selected' : '' ) . " value='05'>05 - " . __( 'May', 'psts' ) . "</option>";
+		$output .= "<option" . ( $sel == 5 ? ' selected' : '' ) . " value='05'>05 - " . __( 'Mai', 'psts' ) . "</option>";
 		$output .= "<option" . ( $sel == 6 ? ' selected' : '' ) . " value='06'>06 - " . __( 'Jun', 'psts' ) . "</option>";
 		$output .= "<option" . ( $sel == 7 ? ' selected' : '' ) . " value='07'>07 - " . __( 'Jul', 'psts' ) . "</option>";
 		$output .= "<option" . ( $sel == 8 ? ' selected' : '' ) . " value='08'>08 - " . __( 'Aug', 'psts' ) . "</option>";
 		$output .= "<option" . ( $sel == 9 ? ' selected' : '' ) . " value='09'>09 - " . __( 'Sep', 'psts' ) . "</option>";
-		$output .= "<option" . ( $sel == 10 ? ' selected' : '' ) . " value='10'>10 - " . __( 'Oct', 'psts' ) . "</option>";
+		$output .= "<option" . ( $sel == 10 ? ' selected' : '' ) . " value='10'>10 - " . __( 'Okt', 'psts' ) . "</option>";
 		$output .= "<option" . ( $sel == 11 ? ' selected' : '' ) . " value='11'>11 - " . __( 'Nov', 'psts' ) . "</option>";
-		$output .= "<option" . ( $sel == 12 ? ' selected' : '' ) . " value='12'>12 - " . __( 'Dec', 'psts' ) . "</option>";
+		$output .= "<option" . ( $sel == 12 ? ' selected' : '' ) . " value='12'>12 - " . __( 'Dez', 'psts' ) . "</option>";
 
 		return $output;
 	}
@@ -524,7 +524,7 @@ class ProSites_Gateway_PayPalExpressPro {
 		) {
 			//Check for level, if there is no level and period, return back
 			if ( empty( $_POST['level'] ) || empty( $_POST['period'] ) ) {
-				$psts->errors->add( 'general', __( 'Please choose your desired level and payment plan.', 'psts' ) );
+				$psts->errors->add( 'general', __( 'Bitte wähle Dein gewünschtes Level und Deinen Zahlungsplan.', 'psts' ) );
 
 				return false;
 			}
@@ -548,7 +548,7 @@ class ProSites_Gateway_PayPalExpressPro {
 				ProSites_Helper_Registration::activate_blog( $process_data['activation_key'], $is_trial, $process_data[ $signup_type ]['period'], $process_data[ $signup_type ]['level'] );
 
 				//Set complete message
-				self::$complete_message = sprintf( __( 'Your trial blog has been setup at <a href="%1$s">%1$s</a>', 'psts' ), $esc_domain );
+				self::$complete_message = sprintf( __( 'Dein Test-Blog wurde unter <a href="%1$s">%1$s</a> eingerichtet', 'psts' ), $esc_domain );
 
 				return;
 			}
@@ -634,19 +634,19 @@ class ProSites_Gateway_PayPalExpressPro {
 				if ( $recurring ) {
 					$descAmount = $is_trial ? $initAmountDesc : $paymentAmountInitial;
 					
-					$months_expresion = __( 'each month', 'psts' );
-					$first_period_expresion = __( 'for first month', 'psts' );
+					$months_expresion = __( 'jeden Monat', 'psts' );
+					$first_period_expresion = __( 'für den ersten Monat', 'psts' );
 
 					if ( $_POST['period'] > 1 ) {
-						$months_expresion = sprintf( __( 'every %1$s months', 'psts' ), $_POST['period'] );
-						$first_period_expresion = sprintf( __( 'for first %1$s months', 'psts' ), $_POST['period'] );
+						$months_expresion = sprintf( __( 'alle %1$s Monate', 'psts' ), $_POST['period'] );
+						$first_period_expresion = sprintf( __( 'für die ersten %1$s Monate', 'psts' ), $_POST['period'] );
 					}
 
 					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ';
 
 					if ( $has_coupon && $lifetime == 'once' ) {
 	
-						$desc .=  sprintf( __( '%1$s %2$s, then %3$s %4$s. ', 'psts' ),
+						$desc .=  sprintf( __( '%1$s %2$s, anschliessend %3$s %4$s. ', 'psts' ),
 							$psts->format_currency( $currency, $descAmount ), 
 							$first_period_expresion,
 							$psts->format_currency( $currency, $paymentAmountDesc ),
@@ -662,14 +662,14 @@ class ProSites_Gateway_PayPalExpressPro {
 					}
 
 					if ( $has_setup_fee ) {
-						$desc .= sprintf( __( 'Plus a one time %1$s setup fee', 'psts' ), $psts->format_currency( $currency, $setup_fee ) );
+						$desc .= sprintf( __( 'Plus eine einmalige Einrichtungsgebühr von %1$s', 'psts' ), $psts->format_currency( $currency, $setup_fee ) );
 					}
 				} else {
 					$descAmount = $paymentAmountDesc + $initAmountDesc;
 					if ( $_POST['period'] == 1 ) {
-						$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s for 1 month', 'psts' ), $psts->format_currency( $currency, $descAmount ) );
+						$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s für 1 Monat', 'psts' ), $psts->format_currency( $currency, $descAmount ) );
 					} else {
-						$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s for %2$s months', 'psts' ), $psts->format_currency( $currency, $descAmount ), $_POST['period'] );
+						$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s für %2$s Monate', 'psts' ), $psts->format_currency( $currency, $descAmount ), $_POST['period'] );
 					}
 				}
 
@@ -679,9 +679,9 @@ class ProSites_Gateway_PayPalExpressPro {
 				$paymentAmountDesc = $paymentAmount + $tax_amt_payment;
 
 				if ( $_POST['period'] == 1 ) {
-					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s %2$s each month', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ), $currency );
+					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s %2$s jeden Monat', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ), $currency );
 				} else {
-					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s %2$s every %3$s months', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ), $currency, $_POST['period'] );
+					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s %2$s alle %3$s Monate', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ), $currency, $_POST['period'] );
 				}
 			} else {
 				//New Signups
@@ -693,15 +693,15 @@ class ProSites_Gateway_PayPalExpressPro {
 				$paymentAmountDesc = $paymentAmount + $tax_amt_payment;
 
 				if ( $_POST['period'] == 1 ) {
-					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s for 1 month', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ) );
+					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s für 1 Monat', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ) );
 				} else {
-					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s for %2$s months', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ), $_POST['period'] );
+					$desc = $site_name . ' ' . $psts->get_level_setting( $_POST['level'], 'name' ) . ': ' . sprintf( __( '%1$s für %2$s Monate', 'psts' ), $psts->format_currency( $currency, $paymentAmountDesc ), $_POST['period'] );
 				}
 			}
 
 			//Update Description for Tax
 			if ( $tax_object->apply_tax ) {
-				$desc .= sprintf( __( '(includes tax of %s%% [%s])', 'psts' ), ( $tax_object->tax_rate * 100 ), $tax_object->country );
+				$desc .= sprintf( __( '(beinhaltet Steuern von %s%% [%s])', 'psts' ), ( $tax_object->tax_rate * 100 ), $tax_object->country );
 			}
 
 			/**
@@ -716,7 +716,7 @@ class ProSites_Gateway_PayPalExpressPro {
 		if ( isset( $_POST['paypal_checkout'] ) || isset( $_POST['paypal_checkout_x'] ) ) {
 			//check for level
 			if ( ! isset( $_POST['period'] ) || ! isset( $_POST['level'] ) ) {
-				$psts->errors->add( 'general', __( 'Please choose your desired level and payment plan.', 'psts' ) );
+				$psts->errors->add( 'general', __( 'Bitte wähle Dein gewünschtes Level und Deinen Zahlungsplan.', 'psts' ) );
 
 				return;
 			}
@@ -739,7 +739,7 @@ class ProSites_Gateway_PayPalExpressPro {
 				$token = $resArray["TOKEN"];
 				PaypalApiHelper::RedirectToPayPal( $token );
 			} else {
-				$psts->errors->add( 'paypal', sprintf( __( 'There was a problem setting up the paypal payment:<br />"<strong>%s</strong>"<br />Please try again.', 'psts' ), self::parse_error_string( $resArray ) ) );
+				$psts->errors->add( 'paypal', sprintf( __( 'Beim Einrichten der Paypal-Zahlung ist ein Problem aufgetreten:<br />"<strong>%s</strong>"<br />Bitte versuche es erneut.', 'psts' ), self::parse_error_string( $resArray ) ) );
 			}
 		}
 
@@ -782,7 +782,7 @@ class ProSites_Gateway_PayPalExpressPro {
 
 					if ( $modify ) {
 						//Plan Update
-						$psts->log_action( $blog_id, sprintf( __( 'User creating new subscription via PayPal Express: Initial payment successful (%1$s) - Transaction ID: %2$s', 'psts' ), $desc, $init_transaction ) );
+						$psts->log_action( $blog_id, sprintf( __( 'Benutzer hat ein neues Abonnement über PayPal Express erstellt: Erste Zahlung erfolgreich (%1$s) - Transaktions-ID: %2$s', 'psts' ), $desc, $init_transaction ) );
 
 						$updated = array(
 							'render'      => true,
@@ -799,12 +799,12 @@ class ProSites_Gateway_PayPalExpressPro {
 						$site_details = ProSites_Helper_Registration::activate_blog( $activation_key, $is_trial, $_POST['period'], $_POST['level'] );
 						$blog_id      = ! empty( $site_details ) ? $site_details['blog_id'] : $blog_id;
 
-						$psts->log_action( $blog_id, sprintf( __( 'User creating modifying subscription via PayPal Express: Payment successful (%1$s) - Transaction ID: %2$s', 'psts' ), $desc, $init_transaction ) );
+						$psts->log_action( $blog_id, sprintf( __( 'Benutzer erstellt änderndes Abonnement über PayPal Express: Zahlung erfolgreich (%1$s) - Transaktions-ID: %2$s', 'psts' ), $desc, $init_transaction ) );
 					}
 
 					//just in case, try to cancel any old subscription
 					if ( ! empty( $blog_id ) && $profile_id = self::get_profile_id( $blog_id ) ) {
-						PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Your %s subscription has been modified. This previous subscription has been canceled.', 'psts' ), $psts->get_setting( 'rebrand' ) ) );
+						PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Dein %s-Abonnement wurde geändert. Dieses vorherige Abonnement wurde gekündigt.', 'psts' ), $psts->get_setting( 'rebrand' ) ) );
 					}
 					//now get the details of the transaction to see if initial payment went through already
 					if ( $payment_status == 'Completed' || $payment_status == 'Processed' ) {
@@ -846,7 +846,7 @@ class ProSites_Gateway_PayPalExpressPro {
 						do_action( 'supporter_payment_processed', $blog_id, $paymentAmount, $_POST['period'], $_POST['level'] );
 
 						if ( empty( self::$complete_message ) ) {
-							self::$complete_message = __( 'Your PayPal subscription was successful! You should be receiving an email receipt shortly.', 'psts' );
+							self::$complete_message = __( 'Dein PayPal-Abonnement war erfolgreich! Du solltest in Kürze eine E-Mail-Bestätigung erhalten.', 'psts' );
 						}
 					} else {
 
@@ -881,14 +881,14 @@ class ProSites_Gateway_PayPalExpressPro {
 						$new_profile_id = $resArray["PROFILEID"];
 
 						$end_date = date_i18n( get_blog_option( $blog_id, 'date_format' ), $modify );
-						$psts->log_action( $blog_id, sprintf( __( 'User modifying subscription via PayPal Express: New subscription created (%1$s), first payment will be made on %2$s - %3$s', 'psts' ), $desc, $end_date, $new_profile_id ) );
+						$psts->log_action( $blog_id, sprintf( __( 'Benutzer ändert Abonnement über PayPal Express: Neues Abonnement erstellt (%1$s), erste Zahlung erfolgt am %2$s - %3$s', 'psts' ), $desc, $end_date, $new_profile_id ) );
 
 						//cancel old subscription
 						$old_gateway = $wpdb->get_var( "SELECT gateway FROM {$wpdb->base_prefix}pro_sites WHERE blog_ID = '$blog_id'" );
 						if ( $profile_id = self::get_profile_id( $blog_id ) ) {
-							$resArray = PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Your %1$s subscription has been modified. This previous subscription has been canceled, and your new subscription (%2$s) will begin on %3$s.', 'psts' ), $psts->get_setting( 'rebrand' ), $desc, $end_date ) );
+							$resArray = PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Dein %1$s-Abonnement wurde geändert. Dieses vorherige Abonnement wurde gekündigt und Dein neues Abonnement (%2$s) beginnt am %3$s.', 'psts' ), $psts->get_setting( 'rebrand' ), $desc, $end_date ) );
 							if ( $resArray['ACK'] == 'Success' || $resArray['ACK'] == 'SuccessWithWarning' ) {
-								$psts->log_action( $blog_id, sprintf( __( 'User modifying subscription via PayPal Express: Old subscription canceled - %s', 'psts' ), $profile_id ) );
+								$psts->log_action( $blog_id, sprintf( __( 'Benutzer ändert Abonnement über PayPal Express: Altes Abonnement gekündigt - %s', 'psts' ), $profile_id ) );
 							}
 						} else {
 							self::manual_cancel_email( $blog_id, $old_gateway ); //send email for old paypal system
@@ -924,7 +924,7 @@ class ProSites_Gateway_PayPalExpressPro {
 						$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->base_prefix}pro_sites SET term = %d WHERE blog_ID = %d", $process_data['upgraded_blog_details']['period'], $blog_id ) );
 
 						//show confirmation page
-						self::$complete_message = sprintf( __( 'Your PayPal subscription modification was successful for %s.', 'psts' ), $desc );
+						self::$complete_message = sprintf( __( 'Deine PayPal-Abonnementänderung war für %s erfolgreich.', 'psts' ), $desc );
 
 						//display GA ecommerce in footer
 						if ( ! $is_trial ) {
@@ -932,11 +932,11 @@ class ProSites_Gateway_PayPalExpressPro {
 						}
 						//show instructions for old gateways
 						if ( $old_gateway == 'PayPal' ) {
-							self::$complete_message .= '<p><strong>' . __( 'Because of billing system upgrades, we were unable to cancel your old subscription automatically, so it is important that you cancel the old one yourself in your PayPal account, otherwise the old payments will continue along with new ones! Note this is the only time you will have to do this.', 'psts' ) . '</strong></p>';
-							self::$complete_message .= '<p><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&alias=' . urlencode( get_site_option( "supporter_paypal_email" ) ) . '"><img src="' . $psts->plugin_url . 'images/cancel_subscribe_gen.gif" /></a><br /><small>' . __( 'You can also cancel following <a href="https://www.paypal.com/webapps/helpcenter/article/?articleID=94044#canceling_recurring_paymemt_subscription_automatic_billing">these steps</a>.', 'psts' ) . '</small></p>';
+							self::$complete_message .= '<p><strong>' . __( 'Aufgrund von Upgrades des Abrechnungssystems konnten wir Dein altes Abonnement nicht automatisch kündigen, daher ist es wichtig, dass Du das alte Abonnement selbst in Deinem PayPal-Konto kündigst, da sonst die alten Zahlungen zusammen mit den neuen fortgesetzt werden! Beachte dass dies das einzige Mal ist, dass Du dies tun musst.', 'psts' ) . '</strong></p>';
+							self::$complete_message .= '<p><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&alias=' . urlencode( get_site_option( "supporter_paypal_email" ) ) . '"><img src="' . $psts->plugin_url . 'images/cancel_subscribe_gen.gif" /></a><br /><small>' . __( 'Du kannst auch mit diesen <a href="https://www.paypal.com/webapps/helpcenter/article/?articleID=94044#canceling_recurring_paymemt_subscription_automatic_billing">Schritten kündigen</a>.', 'psts' ) . '</small></p>';
 						} else if ( $old_gateway == 'Amazon' ) {
-							self::$complete_message .= '<p><strong>' . __( 'Because of billing system upgrades, we were unable to cancel your old subscription automatically, so it is important that you cancel the old one yourself in your Amazon Payments account, otherwise the old payments will continue along with new ones! Note this is the only time you will have to do this.', 'psts' ) . '</strong></p>';
-							self::$complete_message .= '<p>' . __( 'To view your subscriptions, simply go to <a target="_blank" href="https://payments.amazon.com/">https://payments.amazon.com/</a>, click Your Account at the top of the page, log in to your Amazon Payments account (if asked), and then click the Your Subscriptions link. This page displays your subscriptions, showing the most recent, active subscription at the top. To view the details of a specific subscription, click Details. Then cancel your subscription by clicking the Cancel Subscription button on the Subscription Details page.', 'psts' ) . '</p>';
+							self::$complete_message .= '<p><strong>' . __( 'Aufgrund von Upgrades des Abrechnungssystems konnten wir Dein altes Abonnement nicht automatisch kündigen, daher ist es wichtig, dass Du das alte Abonnement selbst in Deinem Amazon Payments-Konto kündigen, da sonst die alten Zahlungen zusammen mit den neuen fortgesetzt werden! Beachte, dass dies das einzige Mal ist, dass Du dies tun musst.', 'psts' ) . '</strong></p>';
+							self::$complete_message .= '<p>' . __( 'Um Deine Abonnements anzuzeigen, gehe einfach zu <a target="_blank" href="https://payments.amazon.com/">https://payments.amazon.com/</a>, klicke auf Dein Konto unter Melde Dich oben auf der Seite bei Deinem Amazon Payments-Konto an (falls Du dazu aufgefordert wirst) und klicke dann auf den Link Deine Abonnements. Auf dieser Seite werden Deine Abonnements angezeigt, wobei das neueste aktive Abonnement ganz oben angezeigt wird. Um die Details eines bestimmten Abonnements anzuzeigen, klicke auf Details. Kündige dann Dein Abonnement, indem Du auf der Seite Abonnementdetails auf die Schaltfläche Abonnement kündigen klickst.', 'psts' ) . '</p>';
 						}
 						//@Todo: check this, as there ain't going to be a transaction id, so better use the profile id
 						//Store Evidence string for the transaction ID
@@ -946,8 +946,8 @@ class ProSites_Gateway_PayPalExpressPro {
 							self::update_evidence( $blog_id, $txn_id, $evidence_string );
 						}
 					} else {
-						$psts->errors->add( 'paypal', sprintf( __( 'There was a problem setting up the Paypal payment:<br />"<strong>%s</strong>"<br />Please try again.', 'psts' ), self::parse_error_string( $resArray ) ) );
-						$psts->log_action( $blog_id, sprintf( __( 'User modifying subscription via PayPal Express: PayPal returned an error: %s', 'psts' ), self::parse_error_string( $resArray ) ) );
+						$psts->errors->add( 'paypal', sprintf( __( 'Beim Einrichten der Paypal-Zahlung ist ein Problem aufgetreten:<br />"<strong>%s</strong>"<br />Bitte versuche es erneut.', 'psts' ), self::parse_error_string( $resArray ) ) );
+						$psts->log_action( $blog_id, sprintf( __( 'Benutzer ändert Abonnement über PayPal Express: PayPal hat einen Fehler zurückgegeben: %s', 'psts' ), self::parse_error_string( $resArray ) ) );
 					}
 				} else {
 					//Handle the new signups
@@ -959,7 +959,7 @@ class ProSites_Gateway_PayPalExpressPro {
 
 					//just in case, try to cancel any old subscription
 					if ( ! empty( $blog_id ) && ( $profile_id = self::get_profile_id( $blog_id ) ) ) {
-						PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Your %s subscription has been modified. This previous subscription has been canceled.', 'psts' ), $psts->get_setting( 'rebrand' ) ) );
+						PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Dein %s-Abonnement wurde geändert. Dieses vorherige Abonnement wurde gekündigt.', 'psts' ), $psts->get_setting( 'rebrand' ) ) );
 					}
 
 					//Include discounted(if any) subscription price in init amount
@@ -985,8 +985,8 @@ class ProSites_Gateway_PayPalExpressPro {
 						//Activate the blog for trial
 						$site_details = ProSites_Helper_Registration::activate_blog( $activation_key, $is_trial, $_POST['period'], $_POST['level'] );
 					} else {
-						$psts->errors->add( 'paypal', sprintf( __( 'There was a problem setting up the Paypal payment:<br />"<strong>%s</strong>"<br />Please try again.', 'psts' ), self::parse_error_string( $resArrayDirect ) ) );
-						$psts->log_action( $blog_id, sprintf( __( 'User creating new subscription via PayPal Express: PayPal returned an error: %s', 'psts' ), self::parse_error_string( $resArrayDirect ) ) );
+						$psts->errors->add( 'paypal', sprintf( __( 'Beim Einrichten der Paypal-Zahlung ist ein Problem aufgetreten:<br />"<strong>%s</strong>"<br />Bitte versuche es erneut.', 'psts' ), self::parse_error_string( $resArrayDirect ) ) );
+						$psts->log_action( $blog_id, sprintf( __( 'Benutzer hat ein neues Abonnement über PayPal Express erstellt: PayPal hat einen Fehler zurückgegeben: %s', 'psts' ), self::parse_error_string( $resArrayDirect ) ) );
 
 						return;
 					}
@@ -1008,7 +1008,7 @@ class ProSites_Gateway_PayPalExpressPro {
 							//save new profile_id
 							self::set_profile_id( $blog_id, $resArray["PROFILEID"] );
 
-							$psts->log_action( $blog_id, sprintf( __( 'User creating new subscription via PayPal Express: Subscription created (%1$s) - Profile ID: %2$s', 'psts' ), $desc, $resArray["PROFILEID"] ) );
+							$psts->log_action( $blog_id, sprintf( __( 'Benutzer erstellt neues Abonnement über PayPal Express: Abonnement erstellt (%1$s) – Profil-ID: %2$s', 'psts' ), $desc, $resArray["PROFILEID"] ) );
 
 							//Store Payment , for rendering the confirmation on checkout page
 							self::update_session_vars( $process_data, array(
@@ -1018,15 +1018,15 @@ class ProSites_Gateway_PayPalExpressPro {
 							) );
 
 							if ( empty( self::$complete_message ) ) {
-								self::$complete_message = __( 'Your PayPal subscription was successful! You should be receiving an email receipt shortly.', 'psts' );
+								self::$complete_message = __( 'Dein PayPal-Abonnement war erfolgreich! Du solltest in Kürze eine E-Mail-Bestätigung erhalten.', 'psts' );
 							}
 						} elseif ( ! empty( $resArray['ACK'] ) ) {
-							self::$complete_message = __( 'Your initial PayPal transaction was successful, but there was a problem creating the subscription so you may need to renew when the first period is up. Your site should be upgraded shortly.', 'psts' ) . '<br />"<strong>' . self::parse_error_string( $resArray ) . '</strong>"';
-							$psts->log_action( $blog_id, sprintf( __( 'User creating new subscription via PayPal Express: Problem creating the subscription after successful initial payment. User may need to renew when the first period is up: %s', 'psts' ), self::parse_error_string( $resArray ) ), $domain );
+							self::$complete_message = __( 'Deine erste PayPal-Transaktion war erfolgreich, aber beim Erstellen des Abonnements ist ein Problem aufgetreten, sodass Du es möglicherweise verlängern musst, wenn die erste Periode abgelaufen ist. Deine Webseite sollte in Kürze aktualisiert werden.', 'psts' ) . '<br />"<strong>' . self::parse_error_string( $resArray ) . '</strong>"';
+							$psts->log_action( $blog_id, sprintf( __( 'Benutzer erstellt neues Abonnement über PayPal Express: Problem beim Erstellen des Abonnements nach erfolgreicher Erstzahlung. Der Benutzer muss möglicherweise erneuern, wenn der erste Zeitraum abgelaufen ist: %s', 'psts' ), self::parse_error_string( $resArray ) ), $domain );
 						} else {
 							//If payment was declined, or user returned
-							$psts->errors->add( 'paypal', sprintf( __( 'There was a problem processing the Paypal payment:<br />"<strong>%s</strong>"<br />Please try again.', 'psts' ), self::parse_error_string( $resArray ) ) );
-							$psts->log_action( $blog_id, sprintf( __( 'User creating subscription via PayPal Express: PayPal returned an error: %s', 'psts' ), self::parse_error_string( $resArray ) ), $domain );
+							$psts->errors->add( 'paypal', sprintf( __( 'Bei der Verarbeitung der Paypal-Zahlung ist ein Problem aufgetreten:<br />"<strong>%s</strong>"<br />Bitte versuche es erneut.', 'psts' ), self::parse_error_string( $resArray ) ) );
+							$psts->log_action( $blog_id, sprintf( __( 'Benutzer hat ein Abonnement über PayPal Express erstellt: PayPal hat einen Fehler zurückgegeben: %s', 'psts' ), self::parse_error_string( $resArray ) ), $domain );
 						}
 
 						//Store activation key in Pro sites table
@@ -1059,7 +1059,7 @@ class ProSites_Gateway_PayPalExpressPro {
 
 			//check for level
 			if ( ! isset( $_POST['period'] ) || ! isset( $_POST['level'] ) ) {
-				$psts->errors->add( 'general', __( 'Please choose your desired level and payment plan.', 'psts' ) );
+				$psts->errors->add( 'general', __( 'Bitte wähle Dein gewünschtes Level und Deinen Zahlungsplan.', 'psts' ) );
 
 				return;
 			}
@@ -1068,18 +1068,18 @@ class ProSites_Gateway_PayPalExpressPro {
 			if ( isset( $_POST['cc_form'] ) ) {
 
 				$error_message = array(
-					'general'    => __( 'Whoops, looks like you may have tried to submit your payment twice so we prevented it. Check your subscription info below to see if it was created. If not, please try again.', 'psts' ),
-					'card-type'  => __( 'Please choose a Card Type.', 'psts' ),
-					'number'     => __( 'Please enter a valid Credit Card Number.', 'psts' ),
-					'expiration' => __( 'Please choose an expiration date.', 'psts' ),
-					'cvv2'       => __( 'Please enter a valid card security code. This is the 3  digits on the signature panel, or 4 digits on the front of Amex cards.', 'psts' ),
-					'firstname'  => __( 'Please enter your First Name.', 'psts' ),
-					'lastname'   => __( 'Please enter your Last Name.', 'psts' ),
-					'address'    => __( 'Please enter your billing Street Address.', 'psts' ),
-					'city'       => __( 'Please enter your billing City.', 'psts' ),
-					'state'      => __( 'Please enter your billing State/Province.', 'psts' ),
-					'zip'        => __( 'Please enter your billing Zip/Postal Code.', 'psts' ),
-					'country'    => __( 'Please enter your billing Country.', 'psts' )
+					'general'    => __( 'Hoppla, es sieht so aus, als hättest Du zweimal versucht, Deine Zahlung zu senden, also haben wir sie verhindert. Überprüfe unten Deine Abonnementinformationen, um festzustellen, ob sie erstellt wurden. Wenn nicht, versuche es bitte erneut.', 'psts' ),
+					'card-type'  => __( 'Bitte wähle einen Kartentyp aus.', 'psts' ),
+					'number'     => __( 'Bitte gib eine gültige Kreditkartennummer ein.', 'psts' ),
+					'expiration' => __( 'Bitte wähle ein Ablaufdatum.', 'psts' ),
+					'cvv2'       => __( 'Bitte gib einen gültigen Kartensicherheitscode ein. Dies sind die 3 Ziffern auf dem Unterschriftsfeld oder 4 Ziffern auf der Vorderseite von Amex-Karten.', 'psts' ),
+					'firstname'  => __( 'Bitte gib Deinen Vornamen ein.', 'psts' ),
+					'lastname'   => __( 'Bitte gib Deinen Nachnamen ein.', 'psts' ),
+					'address'    => __( 'Bitte gib Deine Rechnungsadresse ein.', 'psts' ),
+					'city'       => __( 'Bitte gib Deine Stadt ein.', 'psts' ),
+					'state'      => __( 'Bitte gib Dein Bundesland/die Provinz ein.', 'psts' ),
+					'zip'        => __( 'Bitte gib Deine Postleitzahl für die Rechnungsstellung ein.', 'psts' ),
+					'country'    => __( 'Bitte gib Dein Rechnungsland ein.', 'psts' )
 				);
 
 				//clean up $_POST
@@ -1160,7 +1160,7 @@ class ProSites_Gateway_PayPalExpressPro {
 							$paymentAmount    = $resArray['AMT'];
 
 							if ( $modify ) {
-								$psts->log_action( $blog_id, sprintf( __( 'User creating new subscription via PayPal Direct Payment: Initial payment successful (%1$s) - Transaction ID: %2$s', 'psts' ), $desc, $init_transaction ) );
+								$psts->log_action( $blog_id, sprintf( __( 'Benutzer erstellt neues Abonnement über PayPal Direct Payment: Erste Zahlung erfolgreich (%1$s) – Transaktions-ID: %2$s', 'psts' ), $desc, $init_transaction ) );
 								$updated = array(
 									'render'      => true,
 									'blog_id'     => $blog_id,
@@ -1174,12 +1174,12 @@ class ProSites_Gateway_PayPalExpressPro {
 								//New Signup, Activate blog
 								$site_details = ProSites_Helper_Registration::activate_blog( $activation_key, $is_trial, $_POST['period'], $_POST['level'] );
 								$blog_id      = ! empty( $site_details ) ? $site_details['blog_id'] : $blog_id;
-								$psts->log_action( $blog_id, sprintf( __( 'User creating modifying subscription via PayPal Direct Payment: Payment successful (%1$s) - Transaction ID: %2$s', 'psts' ), $desc, $init_transaction ) );
+								$psts->log_action( $blog_id, sprintf( __( 'Benutzer erstellt änderndes Abonnement über PayPal Direct Payment: Zahlung erfolgreich (%1$s) – Transaktions-ID: %2$s', 'psts' ), $desc, $init_transaction ) );
 							}
 
 							//just in case, try to cancel any old subscription
 							if ( $profile_id = self::get_profile_id( $blog_id ) ) {
-								PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Your %s subscription has been modified. This previous subscription has been canceled.', 'psts' ), $psts->get_setting( 'rebrand' ) ) );
+								PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Dein %s-Abonnement wurde geändert. Dieses vorherige Abonnement wurde gekündigt.', 'psts' ), $psts->get_setting( 'rebrand' ) ) );
 							}
 
 							if ( $modify ) {
@@ -1215,7 +1215,7 @@ class ProSites_Gateway_PayPalExpressPro {
 							do_action( 'supporter_payment_processed', $blog_id, $paymentAmount, $_POST['period'], $_POST['level'] );
 
 							if ( empty( self::$complete_message ) ) {
-								self::$complete_message = __( 'Your PayPal subscription was successful! You should be receiving an email receipt shortly.', 'psts' );
+								self::$complete_message = __( 'Dein PayPal-Abonnement war erfolgreich! Du solltest in Kürze eine E-Mail-Bestätigung erhalten.', 'psts' );
 							}
 							//Store Evidence string for the transaction ID
 							if ( ! empty( $init_transaction ) ) {
@@ -1245,14 +1245,14 @@ class ProSites_Gateway_PayPalExpressPro {
 							$new_profile_id = $resArray["PROFILEID"];
 
 							$end_date = date_i18n( get_blog_option( $blog_id, 'date_format' ), $modify );
-							$psts->log_action( $blog_id, sprintf( __( 'User modifying subscription via CC: New subscription created (%1$s), first payment will be made on %2$s - %3$s', 'psts' ), $desc, $end_date, $new_profile_id ) );
+							$psts->log_action( $blog_id, sprintf( __( 'Benutzer ändert Abonnement über CC: Neues Abonnement erstellt (%1$s), erste Zahlung erfolgt am %2$s - %3$s', 'psts' ), $desc, $end_date, $new_profile_id ) );
 
 							//cancel old subscription
 							$old_gateway = $wpdb->get_var( "SELECT gateway FROM {$wpdb->base_prefix}pro_sites WHERE blog_ID = '$blog_id'" );
 							if ( $old_profile ) {
 								$resArray = PaypalApiHelper::ManageRecurringPaymentsProfileStatus( $profile_id, 'Cancel', sprintf( __( 'Your %1$s subscription has been modified. This previous subscription has been canceled, and your new subscription (%2$s) will begin on %3$s.', 'psts' ), $psts->get_setting( 'rebrand' ), $desc, $end_date ) );
 								if ( $resArray['ACK'] == 'Success' || $resArray['ACK'] == 'SuccessWithWarning' ) {
-									$psts->log_action( $blog_id, sprintf( __( 'User modifying subscription via CC: Old subscription canceled - %s', 'psts' ), $profile_id ) );
+									$psts->log_action( $blog_id, sprintf( __( 'Benutzer ändert Abonnement über CC: Altes Abonnement gekündigt - %s', 'psts' ), $profile_id ) );
 								}
 							} else {
 								self::manual_cancel_email( $blog_id, $old_gateway ); //send email for old paypal system
@@ -1287,18 +1287,18 @@ class ProSites_Gateway_PayPalExpressPro {
 							self::set_profile_id( $blog_id, $new_profile_id );
 
 							//show confirmation page
-							self::$complete_message = sprintf( __( 'Your Credit Card subscription modification was successful for %s.', 'psts' ), $desc );
+							self::$complete_message = sprintf( __( 'Die Änderung Deines Kreditkartenabonnements war für %s erfolgreich.', 'psts' ), $desc );
 
 							//display GA ecommerce in footer
 							$psts->create_ga_ecommerce( $blog_id, $_POST['period'], $initAmount, $_POST['level'], $cc_city, $cc_state, $cc_country );
 
 							//show instructions for old gateways
 							if ( $old_gateway == 'PayPal' ) {
-								self::$complete_message .= '<p><strong>' . __( 'Because of billing system upgrades, we were unable to cancel your old subscription automatically, so it is important that you cancel the old one yourself in your PayPal account, otherwise the old payments will continue along with new ones! Note this is the only time you will have to do this.', 'psts' ) . '</strong></p>';
-								self::$complete_message .= '<p><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&alias=' . urlencode( get_site_option( "supporter_paypal_email" ) ) . '"><img src="' . $psts->plugin_url . 'images/cancel_subscribe_gen.gif" /></a><br /><small>' . __( 'You can also cancel following <a href="https://www.paypal.com/helpcenter/main.jsp;jsessionid=SCPbTbhRxL6QvdDMvshNZ4wT2DH25d01xJHj6cBvNJPGFVkcl6vV!795521328?t=solutionTab&ft=homeTab&ps=&solutionId=27715&locale=en_US&_dyncharset=UTF-8&countrycode=US&cmd=_help-ext">these steps</a>.', 'psts' ) . '</small></p>';
+								self::$complete_message .= '<p><strong>' . __( 'Aufgrund von Upgrades des Abrechnungssystems konnten wir Dein altes Abonnement nicht automatisch kündigen, daher ist es wichtig, dass Du das alte Abonnement selbst in Deinem PayPal-Konto kündigst, da sonst die alten Zahlungen zusammen mit den neuen fortgesetzt werden! Beachte dass dies das einzige Mal ist, dass Du dies tun musst.', 'psts' ) . '</strong></p>';
+								self::$complete_message .= '<p><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&alias=' . urlencode( get_site_option( "supporter_paypal_email" ) ) . '"><img src="' . $psts->plugin_url . 'images/cancel_subscribe_gen.gif" /></a><br /><small>' . __( 'Du kannst auch kündigen indem <a href="https://www.paypal.com/helpcenter/main.jsp;jsessionid=SCPbTbhRxL6QvdDMvshNZ4wT2DH25d01xJHj6cBvNJPGFVkcl6vV!795521328?t=solutionTab&ft=homeTab&ps=&solutionId=27715&locale=en_US&_dyncharset=UTF-8&countrycode=US&cmd=_help-ext">diese Schritte</a> befolgst.', 'psts' ) . '</small></p>';
 							} else if ( $old_gateway == 'Amazon' ) {
 								self::$complete_message .= '<p><strong>' . __( 'Because of billing system upgrades, we were unable to cancel your old subscription automatically, so it is important that you cancel the old one yourself in your Amazon Payments account, otherwise the old payments will continue along with new ones! Note this is the only time you will have to do this.', 'psts' ) . '</strong></p>';
-								self::$complete_message .= '<p>' . __( 'To view your subscriptions, simply go to <a target="_blank" href="https://payments.amazon.com/">https://payments.amazon.com/</a>, click Your Account at the top of the page, log in to your Amazon Payments account (if asked), and then click the Your Subscriptions link. This page displays your subscriptions, showing the most recent, active subscription at the top. To view the details of a specific subscription, click Details. Then cancel your subscription by clicking the Cancel Subscription button on the Subscription Details page.', 'psts' ) . '</p>';
+								self::$complete_message .= '<p>' . __( 'Um Deine Abonnements anzuzeigen, gehe einfach zu <a target="_blank" href="https://payments.amazon.com/">https://payments.amazon.com/</a>, klicke auf Dein Konto unter Melde Dich oben auf der Seite bei Deinem Amazon Payments-Konto an (falls Du dazu aufgefordert wirst) und klicke dann auf den Link Deine Abonnements. Auf dieser Seite werden Deine Abonnements angezeigt, wobei das neueste aktive Abonnement ganz oben angezeigt wird. Um die Details eines bestimmten Abonnements anzuzeigen, klicke auf Details. Kündige dann Dein Abonnement, indem Du auf der Seite Abonnementdetails auf die Schaltfläche Abonnement kündigen klickst.', 'psts' ) . '</p>';
 							}
 							//Store Evidence string for the transaction ID
 							$txn_id = ! empty( $resArray['TRANSACTIONID'] ) ? $resArray['TRANSACTIONID'] : ( ! empty( $resArray['PROFILEID'] ) ? $resArray['PROFILEID'] : '' );
@@ -1308,8 +1308,8 @@ class ProSites_Gateway_PayPalExpressPro {
 							}
 
 						} else {
-							$psts->errors->add( 'paypal', sprintf( __( 'There was a problem with your Credit Card information:<br />"<strong>%s</strong>"<br />Please try again.', 'psts' ), self::parse_error_string( $resArray ) ) );
-							$psts->log_action( $blog_id, sprintf( __( 'User modifying subscription via CC: PayPal returned a problem with Credit Card info: %s', 'psts' ), self::parse_error_string( $resArray ) ) );
+							$psts->errors->add( 'paypal', sprintf( __( 'Es gab ein Problem mit Deinen Kreditkarteninformationen:<br />"<strong>%s</strong>"<br />Bitte versuche es erneut.', 'psts' ), self::parse_error_string( $resArray ) ) );
+							$psts->log_action( $blog_id, sprintf( __( 'Benutzer ändert Abonnement über CC: PayPal hat ein Problem mit Kreditkarteninformationen zurückgegeben: %s', 'psts' ), self::parse_error_string( $resArray ) ) );
 						}
 
 					} else { //new or expired signup
@@ -1407,7 +1407,7 @@ class ProSites_Gateway_PayPalExpressPro {
 					}
 
 				} else {
-					$psts->errors->add( 'paypal', __( 'There was a problem with your credit card information. Please check all fields and try again.', 'psts' ) );
+					$psts->errors->add( 'paypal', __( 'Es gab ein Problem mit Deinen Kreditkarteninformationen. Bitte überprüfe alle Felder und versuche es erneut.', 'psts' ) );
 				}
 			}
 		};
@@ -1426,7 +1426,7 @@ class ProSites_Gateway_PayPalExpressPro {
 		global $psts;
 
 		// Get the general currency set in Pro Sites.
-		return $psts->get_setting( 'currency', 'USD' );
+		return $psts->get_setting( 'currency', 'EUR' );
 	}
 
 	public static function get_free_trial_desc() {
@@ -1546,7 +1546,7 @@ class ProSites_Gateway_PayPalExpressPro {
 	 */
 	private static function update_pending_reason( $blog_id, $payment_status, $payerid, $pending_reason = '', $pending_profile = '' ) {
 		global $psts, $wpdb;
-		$psts->log_action( $blog_id, sprintf( __( 'PayPal response: Last payment is pending (%s). Reason: %s', 'psts' ), $payment_status, $pending_reason ) . '. Payer ID: ' . $payerid );
+		$psts->log_action( $blog_id, sprintf( __( 'PayPal-Antwort: Letzte Zahlung steht aus (%s). Grund: %s', 'psts' ), $payment_status, $pending_reason ) . '. Payer ID: ' . $payerid );
 
 		//Store Payment status and reason in pro site meta
 		$payment_details = array(
@@ -1636,13 +1636,13 @@ class ProSites_Gateway_PayPalExpressPro {
 
 		//show instructions for old gateways
 		if ( $old_gateway == 'PayPal' ) {
-			$message = __( "Thank you for modifying your subscription!\n\n", 'psts' );
+			$message = __( "Vielen Dank für die Änderung Deines Abonnements!\n\n", 'psts' );
 			$message .= __( "We want to remind you that because of billing system upgrades, we were unable to cancel your old subscription automatically, so it is important that you cancel the old one yourself in your PayPal account, otherwise the old payments will continue along with new ones!\n\n", 'psts' );
 			$message .= __( "Cancel your subscription in your PayPal account:\n", 'psts' );
 			$message .= sprintf( __( "https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&alias=%s\n\n", 'psts' ), urlencode( get_site_option( "supporter_paypal_email" ) ) );
 			$message .= sprintf( __( "You can also cancel following these steps:\n%s", 'psts' ), 'https://www.paypal.com/webapps/helpcenter/article/?articleID=94044#canceling_recurring_paymemt_subscription_automatic_billing' );
 		} else if ( $old_gateway == 'Amazon' ) {
-			$message = __( "Thank you for modifying your subscription!\n\n", 'psts' );
+			$message = __( "Vielen Dank für die Änderung Deines Abonnements!\n\n", 'psts' );
 			$message .= __( "We want to remind you that because of billing system upgrades, we were unable to cancel your old subscription automatically, so it is important that you cancel the old one yourself in your Amazon Payments account, otherwise the old payments will continue along with new ones!\n\n", 'psts' );
 			$message .= __( "To cancel your subscription:\n", 'psts' );
 			$message .= __( "Simply go to https://payments.amazon.com/, click Your Account at the top of the page, log in to your Amazon Payments account (if asked), and then click the Your Subscriptions link. This page displays your subscriptions, showing the most recent, active subscription at the top. To view the details of a specific subscription, click Details. Then cancel your subscription by clicking the Cancel Subscription button on the Subscription Details page.", 'psts' );
@@ -1655,7 +1655,7 @@ class ProSites_Gateway_PayPalExpressPro {
 		);
 		add_action('phpmailer_init', 'psts_text_body' );
 
-		wp_mail( $email, __( "Don't forget to cancel your old subscription!", 'psts' ), $message, $headers );
+		wp_mail( $email, __( "Vergiss nicht, Dein altes Abonnement zu kündigen!", 'psts' ), $message, $headers );
 
 		remove_action('phpmailer_init', 'psts_text_body');
 

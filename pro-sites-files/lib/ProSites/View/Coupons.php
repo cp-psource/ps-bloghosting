@@ -184,7 +184,7 @@ if ( ! class_exists( 'ProSites_View_Coupons' ) ) {
 				// define the columns to display, the syntax is 'internal name' => 'display name'
 				$posts_columns = array(
 					'code'      => __( 'Gutscheincode', 'psts' ),
-					'lifetime'  => __( 'Lebenszeit', 'psts' ),
+					'lifetime'  => __( 'Laufzeit', 'psts' ),
 					'discount'  => __( 'Rabatt', 'psts' ),
 					'start'     => __( 'Startdatum', 'psts' ),
 					'end'       => __( 'Ablaufdatum', 'psts' ),
@@ -406,7 +406,7 @@ if ( ! class_exists( 'ProSites_View_Coupons' ) ) {
 											<?php echo __( 'Gutscheincode', 'psts' ) . $psts->help_text( __( 'Nur Buchstaben und Zahlen', 'psts' ) ); ?>
 										</th>
 										<th class="coupon-life">
-											<?php echo __( 'Lebenszeit', 'psts' ) . $psts->help_text( __( 'Nur für die erste Zahlung oder die Laufzeit des Kontos.', 'psts' ) ); ?>
+											<?php echo __( 'Laufzeit', 'psts' ) . $psts->help_text( __( 'Nur für die erste Zahlung oder die Laufzeit des Kontos.', 'psts' ) ); ?>
 										</th>
 										<th><?php echo __( 'Rabatt', 'psts' ) . $psts->help_text( sprintf( __( 'Wenn der Rabatt zu einer kostenlosen Kaufabwicklung führt, wird der Betrag auf %s angepasst, um Gateway-Fehler zu vermeiden. Verwende stattdessen die Funktion "Kostenlose Testversion" oder "Manuelle Erweiterung".', 'psts' ), $psts->format_currency( '', 0.01 ) ) ); ?></th>
 										<th><?php _e( 'Anfangsdatum', 'psts' ) ?></th>
@@ -471,9 +471,9 @@ if ( ! class_exists( 'ProSites_View_Coupons' ) ) {
 											?>
 											<td>
 												<select name="valid_for_period[]" multiple class="psts-period chosen"
-												        data-placeholder="Select Period">
+												        data-placeholder="Zeitraum auswählen">
 													<option
-														value="0" <?php echo in_array( 0, $valid_for_period ) ? 'selected' : ''; ?>><?php _e( 'Any Period', 'psts' ) ?></option>
+														value="0" <?php echo in_array( 0, $valid_for_period ) ? 'selected' : ''; ?>><?php _e( 'Jeder Zeitraum', 'psts' ) ?></option>
 													<?php
 													foreach ( $periods as $period ) {
 														$text = $period == 1 ? __( 'Monat', 'psts' ) : __( 'Monate', 'psts' );

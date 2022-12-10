@@ -902,7 +902,7 @@ class ProSites_Module_BulkUpgrades {
 					$curr_blogs = get_blogs_of_user( get_current_user_id() );
 					if ( ! isset( $_POST['submit_search'] ) && $curr_blogs ) {
 						?>
-						<h4><?php _e( 'Choose a site you are a member of:', 'psts' ); ?></h4>
+						<h4><?php _e( 'Wähle eine Webseite aus, bei der Du Mitglied bist: a site you are a member of:', 'psts' ); ?></h4>
 						<table cellpadding='3' cellspacing='3' width='100%' class='widefat'>
 							<thead>
 							<tr>

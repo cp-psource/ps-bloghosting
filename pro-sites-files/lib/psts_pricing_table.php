@@ -328,7 +328,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=\'' . $rgb_col
 		// Render table headers
 		$content .= '<div class="header row">
 						<ul class="plan labels">
-							<li class="price column">Select your plan!</li>';
+							<li class="price column">Wähle Deinen Plan!</li>';
 		$selected_period = $this->sel_period;
 		$body_content    = "";
 		$selected        = $this->sel_level;
@@ -477,7 +477,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=\'' . $rgb_col
 		$content .= '<li class="row"><div class="column"></div>';
 		foreach ( $levels as $level_id => $level ) {
 			$content .= '<div class="column">
-			          <a href="#" class="button choose-plan" data-level="' . $level_id . '" data-level-name="' . strtolower( $level ['name'] ) . '">Choose Plan</a>
+			          <a href="#" class="button choose-plan" data-level="' . $level_id . '" data-level-name="' . strtolower( $level ['name'] ) . '">Wähle einen Plan</a>
 		            </div>';
 		}
 		$content .= '</li>';

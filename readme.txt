@@ -88,6 +88,11 @@ Halte Dich mit unserem [Newsletter](https://n3rds.work/webmasterservice-n3rdswor
 
 == ChangeLog ==
 
+= 4.0.9 = DerN3rd =
+
+* CSS Anpassungen für Tooltips Einstellungen
+* Textanpassungen
+
 = 4.0.8 = DerN3rd =
 
 * Getestet PhP8.1

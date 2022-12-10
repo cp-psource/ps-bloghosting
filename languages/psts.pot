@@ -1104,7 +1104,7 @@ msgid "Checkout-Seite bearbeiten &raquo;"
 msgstr ""
 
 #: pro-sites-files/modules/bulk-upgrades.php:905
-msgid "Choose a site you are a member of:"
+msgid "Wähle eine Webseite aus, bei der Du Mitglied bist: a site you are a member of:"
 msgstr ""
 
 #: pro-sites-files/lib/psts_pricing_table_admin.php:382
@@ -2696,7 +2696,7 @@ msgstr ""
 
 #: pro-sites-files/lib/ProSites/View/Coupons.php:187
 #: pro-sites-files/lib/ProSites/View/Coupons.php:409
-msgid "Lebenszeit"
+msgid "Laufzeit"
 msgstr ""
 
 #: pro-sites-files/lib/ProSites/View/Settings.php:120

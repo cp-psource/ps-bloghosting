@@ -55,7 +55,7 @@ select.chosen.narrow {
 /** Help Tip **/
 .help_tip {
     margin-left: 4px;
-    /*position: absolute;*/
+    position: absolute;
     /*top: 22px;*/
 }
 
@@ -179,7 +179,8 @@ th.psts-help-div {
 
 .free-signup .help_tip {
     position: absolute;
-    top: 23px;
+    top: 22px;
+    left: 200px;
 }
 
 .multiple-signup .help_tip {
@@ -201,7 +202,7 @@ th.psts-help-div {
 .pay-for-signup .help_tip {
     position: absolute;
     top: 21px;
-    right: 56px;
+    right: 45px;
 }
 
 .pay-for-signup .psts-help-text-wrapper {
