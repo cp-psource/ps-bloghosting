@@ -92,6 +92,8 @@ Halte Dich mit unserem [Newsletter](https://n3rds.work/webmasterservice-n3rdswor
 
 * CSS Anpassungen für Tooltips Einstellungen
 * Textanpassungen
+* Fix: Unsupported operand types
+* Fix: PHP Deprecated:  Required parameter
 
 = 4.0.8 = DerN3rd =
 

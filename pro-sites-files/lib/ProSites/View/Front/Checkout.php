@@ -557,33 +557,42 @@ if ( ! class_exists( 'ProSites_View_Front_Checkout' ) ) {
 					}
 
 					// Get level price and format it
-					$price          = ProSites_Helper_UI::rich_currency_format( $level_list[ $level ][ $period_key ] );
-					$price_plain    = ProSites_Helper_UI::rich_currency_format( $level_list[ $level ][ $period_key ], true );
-					$period_content = '<div class="price ' . esc_attr( $period_key ) . esc_attr( $display_style ) . '">';
+					$price = ProSites_Helper_UI::rich_currency_format($level_list[$level][$period_key]);
+					$price_plain = ProSites_Helper_UI::rich_currency_format($level_list[$level][$period_key], true);
+					$period_content = '<div class="price ' . esc_attr($period_key) . esc_attr($display_style) . '">';
 					$period_content .= '<div class="plan-price original-amount">' . $price . '</div>';
-					$period_content .= '<div class="price-plain hidden plan-' . $level . '' . $months . '-plain">' . $price_plain . '</div>';
-					$period_content .= '<div class="period original-period">' . esc_html( $period ) . '</div>';
-					$period_content .= ! empty( $setup_msg ) ? $setup_msg : '';
-					if ( count( $active_periods ) == 1 ) {
+					$period_content .= '<div class="price-plain hidden plan-' . $level . $months . '-plain">' . $price_plain . '</div>';
+					$period_content .= '<div class="period original-period">' . esc_html($period) . '</div>';
+					$period_content .= !empty($setup_msg) ? $setup_msg : '';
+					if (count($active_periods) == 1) {
 						$period_content .= '<div class="hidden" name="single_period">' . $create_hidden . '</div>';
 					}
-					$period_content                            .= '</div>';
-					$level_details['breakdown'][ $period_key ] = str_replace( 'hide', '', $period_content );
-					$content                                   .= $period_content;
+					$period_content .= '</div>';
+					$level_details['breakdown'][$period_key] = str_replace('hide', '', $period_content);
+					$content .= $period_content;
 
-					$monthly_price = $level_list[ $level ]['price_1'];
+					$monthly_price = (float)$level_list[$level]['price_1'];
 
-					$monthly_calculated = $level_list[ $level ][ $period_key ] / $months * 1.0;
-					$difference         = ( $monthly_price - $monthly_calculated ) * $months;
+					// Überprüfen, ob $monthly_price und $monthly_calculated numerische Werte sind, bevor die Berechnung durchgeführt wird.
+					if (is_numeric($monthly_price) && is_numeric($monthly_calculated)) {
+						$monthly_calculated = (float)$level_list[$level][$period_key] / $months * 1.0;
+						$difference = ($monthly_price - $monthly_calculated) * $months;
+						$calculated_monthly = ProSites_Helper_UI::rich_currency_format($monthly_calculated);
+						$calculated_saving = ProSites_Helper_UI::rich_currency_format($difference);
+					} else {
+						// Fehlerbehandlung, falls $monthly_price oder $monthly_calculated keine numerischen Werte sind.
+						// Setzen Sie $difference und andere Variablen auf Standardwerte oder ergreifen Sie andere Maßnahmen.
+						$difference = 0; // Oder einen anderen geeigneten Standardwert.
+						$calculated_monthly = 'N/A';
+						$calculated_saving = 'N/A';
+					}
 
-					$calculated_monthly   = ProSites_Helper_UI::rich_currency_format( $monthly_calculated );
-					$calculated_saving    = ProSites_Helper_UI::rich_currency_format( $difference );
 					$formatted_calculated = '<div class="monthly-price original-amount">' . $calculated_monthly . '</div>';
 					$formatted_calculated .= '<div class="monthly-price-hidden hidden">' . $calculated_monthly . '</div>';
-					$formatted_savings    = '<div class="savings-price original-amount">' . $calculated_saving . '</div>';
-					$formatted_savings    .= '<div class="savings-price-hidden hidden">' . $calculated_saving . '</div>';
+					$formatted_savings = '<div class="savings-price original-amount">' . $calculated_saving . '</div>';
+					$formatted_savings .= '<div class="savings-price-hidden hidden">' . $calculated_saving . '</div>';
 
-					$summary_msg = sprintf( $plan_text['monthly'] );
+					$summary_msg = sprintf($plan_text['monthly']);
 
 
 					$periods      = (array) $psts->get_setting( 'enabled_periods' );

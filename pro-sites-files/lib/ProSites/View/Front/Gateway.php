@@ -230,7 +230,7 @@ if ( ! class_exists( 'ProSites_View_Front_Gateway' ) ) {
 			return apply_filters( 'psts_render_checkout_gateway', $content );
 		}
 
-		public static function render_current_plan_information( $render_data = array(), $blog_id, $domain, $gateways, $gateway_order ) {
+		public static function render_current_plan_information($blog_id, $domain, $gateways, $gateway_order, $render_data = array()){
 			global $psts, $wpdb, $current_site, $current_prosite_blog;
 
 			if ( empty( $gateway_order ) ) {
