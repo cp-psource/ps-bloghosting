@@ -3,7 +3,7 @@
  * Plugin Name: PS-Bloghosting
  * Plugin URI:  https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/
  * Description: Das ultimative Bloghosting-Plugin für Multisites verwandelt reguläre Websites in mehrere PRO-Webseite-Abonnementstufen, die Zugriff auf Speicherplatz, Premium-Themen, Premium-Plugins und vieles mehr bieten!
- * Version:     4.0.8
+ * Version:     4.0.9
  * Author:      WMS N@W
  * Author URI:  https://n3rds.work/
  * Text Domain: psts
@@ -37,7 +37,7 @@ $MyUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 
 class ProSites {
 
-	var $version = '4.0.8';
+	var $version = '4.0.9';
 	var $location;
 	var $language;
 	var $plugin_dir = '';
