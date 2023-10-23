@@ -52,6 +52,14 @@ class ProSites {
 
 	public static $plugin_file = __FILE__;
 
+	public $countries;
+    public $usa_states;
+    public $uk_counties;
+    public $australian_states;
+    public $canadian_provinces;
+    public $eu_countries;
+    public $currencies;
+
 	function __construct() {
 
 		// Creates the class autoloader.
