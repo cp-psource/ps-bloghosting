@@ -296,7 +296,7 @@ if ( ! class_exists( 'ProSites_Model_Registration' ) ) {
 		 * Update the NBT templates based on the plan.
 		 *
 		 * To support New Blog Templates:
-		 * Update the NBT template selector based on the Pro Sites
+		 * Update the NBT template selector based on the PS Bloghosting
 		 * plan selected. If a restricted theme/plugin is active on a NBT
 		 * template, hide that template from registration form.
 		 *
@@ -395,7 +395,7 @@ if ( ! class_exists( 'ProSites_Model_Registration' ) ) {
 
 			global $psts;
 
-			// Get the enabled modules in Pro Sites.
+			// Get the enabled modules in PS Bloghosting.
 			$modules_enabled         = (array) $psts->get_setting( 'modules_enabled' );
 			$premium_themes_enabled  = in_array( 'ProSites_Module_PremiumThemes', $modules_enabled );
 			$premium_plugins_enabled = in_array( 'ProSites_Module_Plugins', $modules_enabled );
@@ -500,7 +500,7 @@ if ( ! class_exists( 'ProSites_Model_Registration' ) ) {
 				return $unavailable_levels;
 			}
 
-			// Get the enabled modules in Pro Sites.
+			// Get the enabled modules in PS Bloghosting.
 			$modules_enabled         = (array) $psts->get_setting( 'modules_enabled' );
 			$premium_themes_enabled  = in_array( 'ProSites_Module_PremiumThemes', $modules_enabled );
 			$premium_plugins_enabled = in_array( 'ProSites_Module_Plugins', $modules_enabled );

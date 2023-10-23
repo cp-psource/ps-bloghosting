@@ -1355,7 +1355,7 @@ class ProSites_Gateway_PayPalExpressPro {
 
 							update_blog_option( $blog_id, 'psts_waiting_step', 1 );
 
-							//Store activation key in Pro Sites table
+							//Store activation key in PS Bloghosting table
 							self::set_blog_identifier( $activation_key, $blog_id );
 
 							//now attempt to create the subscription
@@ -1425,7 +1425,7 @@ class ProSites_Gateway_PayPalExpressPro {
 	public static function currency() {
 		global $psts;
 
-		// Get the general currency set in Pro Sites.
+		// Get the general currency set in PS Bloghosting.
 		return $psts->get_setting( 'currency', 'EUR' );
 	}
 
@@ -1693,7 +1693,7 @@ class ProSites_Gateway_PayPalExpressPro {
 		if ( empty ( $blog_id ) || empty( $key ) ) {
 			return false;
 		}
-		//Store activation key in Pro Sites table
+		//Store activation key in PS Bloghosting table
 		$query = "UPDATE {$wpdb->base_prefix}pro_sites SET identifier='%s' WHERE blog_id='%d'";
 
 		return $wpdb->query( $wpdb->prepare( $query, $key, $blog_id ) );
@@ -2894,7 +2894,7 @@ class ProSites_Gateway_PayPalExpressPro {
 					$req .= '&' . $k . '=' . urlencode( stripslashes( $v ) );
 				}
 
-				$args['user-agent']  = "Pro Sites: https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/ | PayPal Express Gateway";
+				$args['user-agent']  = "PS Bloghosting: https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/ | PayPal Express Gateway";
 				$args['body']        = $req;
 				$args['sslverify']   = false;
 				$args['timeout']     = 60;

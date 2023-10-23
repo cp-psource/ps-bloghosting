@@ -1,6 +1,6 @@
 <?php
 /*
-Pro Sites (Feature: Bulk upgrades IPN handler pre 3.0 backwards compatibility)
+PS Bloghosting (Feature: Bulk upgrades IPN handler pre 3.0 backwards compatibility)
 
 If you previously used Bulk Upgrades with a recurring subscription, it is important to place this file in your webroot.
 */
@@ -48,7 +48,7 @@ if (!isset($_POST['payment_status'])) {
 		$req .= '&' . $k . '=' . urlencode($v);
 	}
 
-	$args['user-agent'] = "Pro Sites/{$psts->version}: https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/ | PayPal Bulk Upgrades/{$psts->version}";
+	$args['user-agent'] = "PS Bloghosting/{$psts->version}: https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/ | PayPal Bulk Upgrades/{$psts->version}";
 	$args['body'] = $req;
 	$args['sslverify'] = false;
 

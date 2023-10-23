@@ -519,7 +519,7 @@ if ( ! class_exists( 'ProSites_Helper_ProSite' ) ) {
 				return false;
 			}
 
-			// Check if an entry exist in Pro Sites table for current blog id.
+			// Check if an entry exist in PS Bloghosting table for current blog id.
 			$site = self::get_site( $blog_id );
 
 			return empty( $site );

@@ -1,6 +1,6 @@
 <?php
 /*
-Pro Sites (Paypal Gateway IPN handler for backwards compatibility)
+PS Bloghosting (Paypal Gateway IPN handler for backwards compatibility)
 
 If you have existing subscriptions using the old pre 3.0 Supporter Paypal gateway, then it is important to
 overwrite the supporter-paypal.php file in your webroot with this one to prevent a lapse in subscription

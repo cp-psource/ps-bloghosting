@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Pro Sites (Gateway: Manual Payments Gateway)
+ * PS Bloghosting (Gateway: Manual Payments Gateway)
  */
 
 if ( ! class_exists( 'ProSites_Gateway_2Checkout' ) ) {

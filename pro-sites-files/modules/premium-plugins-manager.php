@@ -1,7 +1,7 @@
 <?php
 
 /*
-Pro Sites (Module: Premium Plugins Manager)
+PS Bloghosting (Module: Premium Plugins Manager)
 */
 
 class ProSites_Module_Plugins_Manager {

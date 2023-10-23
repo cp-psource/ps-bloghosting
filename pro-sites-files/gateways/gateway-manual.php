@@ -1,7 +1,7 @@
 <?php
 
 /*
-Pro Sites (Gateway: Manuelles Zahlungsgateway)
+PS Bloghosting (Gateway: Manuelles Zahlungsgateway)
 */
 
 class ProSites_Gateway_Manual {
@@ -338,7 +338,7 @@ class ProSites_Gateway_Manual {
 					'gateway'     => 'manual'
 				);
 				ProSites_Helper_Session::session( 'plan_updated', $updated );
-				$subject = __( 'Pro Sites Manual Payment Submission for Plan update', 'psts' );
+				$subject = __( 'PS Bloghosting Manual Payment Submission for Plan update', 'psts' );
 
 				$message_fields = apply_filters( 'prosites_manual_payment_email_info_fields', array(
 					'username'     => $username,
@@ -352,7 +352,7 @@ class ProSites_Gateway_Manual {
 				) );
 
 				$message_parts = apply_filters( 'prosites_manual_payment_email_info', array(
-					'description'    => sprintf( __( 'The user "%s" has submitted a manual payment request via the Pro Sites checkout form.', 'psts' ), $message_fields['username'] ) . "\n",
+					'description'    => sprintf( __( 'The user "%s" has submitted a manual payment request via the PS Bloghosting checkout form.', 'psts' ), $message_fields['username'] ) . "\n",
 					'level_text'     => __( 'Level: ', 'psts' ) . $message_fields['level'] . ' - ' . $message_fields['level_name'],
 					'period_text'    => __( 'Period: ', 'psts' ) . sprintf( __( 'Every %d Months', 'psts' ), $message_fields['period'] ),
 					'email_text'     => sprintf( __( "User Email: %s", 'psts' ), $message_fields['user_email'] ),
@@ -373,7 +373,7 @@ class ProSites_Gateway_Manual {
 
 			} else {
 
-				$subject = __( 'Pro Sites Manual Payment Submission', 'psts' );
+				$subject = __( 'PS Bloghosting Manual Payment Submission', 'psts' );
 
 				$activate_url = '';
 
@@ -406,7 +406,7 @@ class ProSites_Gateway_Manual {
 				) );
 
 				$message_parts = apply_filters( 'prosites_manual_payment_email_info', array(
-					'description'     => sprintf( __( 'The user "%s" has submitted a manual payment request via the Pro Sites checkout form.', 'psts' ), $message_fields['username'] ) . "\n",
+					'description'     => sprintf( __( 'The user "%s" has submitted a manual payment request via the PS Bloghosting checkout form.', 'psts' ), $message_fields['username'] ) . "\n",
 					'level_text'      => __( 'Level: ', 'psts' ) . $message_fields['level'] . ' - ' . $message_fields['level_name'],
 					'period_text'     => __( 'Period: ', 'psts' ) . sprintf( __( 'Every %d Months', 'psts' ), $message_fields['period'] ),
 					'email_text'      => sprintf( __( "User Email: %s", 'psts' ), $message_fields['user_email'] ),

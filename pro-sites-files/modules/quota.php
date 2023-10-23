@@ -101,7 +101,7 @@ class ProSites_Module_Quota {
 		?>
 		<!--		<div class="postbox">-->
 		<!--			<h3 class="hndle" style="cursor:auto;"><span>--><?php //_e( 'Upload Quota', 'psts' ) ?><!--</span> --->
-		<!--				<span class="description">--><?php //_e( 'Allows you to give additional upload space to Pro Sites.', 'psts' ) ?><!--</span>-->
+		<!--				<span class="description">--><?php //_e( 'Allows you to give additional upload space to PS Bloghosting.', 'psts' ) ?><!--</span>-->
 		<!--			</h3>-->
 
 		<div class="inside">

@@ -2586,7 +2586,7 @@ class ProSites {
 
 		global $pagenow;
 
-		// Do not load Pro Sites scripts/styles all over admin.
+		// Do not load PS Bloghosting scripts/styles all over admin.
 		if ( 'admin.php' !== $pagenow || ! isset( $_GET['page'] ) || 0 !== strpos( $_GET['page'], 'psts' ) ) {
 			return;
 		}
@@ -3501,7 +3501,7 @@ if ( $active_pro_sites ) {
 		jQuery(document).ready(function ($) {
 			//set data
 			var pro_sites = {
-				label: "<?php echo esc_js(__('Total Pro Sites', 'psts')); ?>",
+				label: "<?php echo esc_js(__('Total PS Bloghosting', 'psts')); ?>",
 				color: 3,
 				data: [<?php echo $pro_sites; ?>]
 			};
@@ -3696,7 +3696,7 @@ if ( $active_pro_sites ) {
 	</script>
 <div class="wrap">
 	<div class="icon32"><img src="<?php echo $this->plugin_url . 'images/stats.png'; ?>"/></div>
-	<h1><?php _e( 'Pro Sites Statistics', 'psts' ); ?></h1>
+	<h1><?php _e( 'PS Bloghosting Statistics', 'psts' ); ?></h1>
 
 <?php echo $this->weekly_summary(); ?>
 
@@ -3910,7 +3910,7 @@ function admin_levels() {
 		);
 		?>
 		<h3><?php _e( 'Pro Webseiten-Pakete bearbeiten', 'psts' ) ?></h3>
-		<span class="description"><?php _e( 'Pro Sites werden die Funktionen allen Levelnummern zu oder unter ihren eigenen zugewiesen. Du kannst einen Abonnementzeitraum deaktivieren, indem Du ihn deaktivierst. Durch Ändern der Preise eines Levels wird weder die aktuelle Abonnementrate noch der Plan für vorhandene Standorte in diesem Level geändert. Wenn Du eine Ebene löschst, behalten vorhandene Webseiten in dieser Ebene die Funktionen aller Ebenen unter ihrer aktuellen Ebenennummer bei.', 'psts' ) ?></span>
+		<span class="description"><?php _e( 'PS Bloghosting werden die Funktionen allen Levelnummern zu oder unter ihren eigenen zugewiesen. Du kannst einen Abonnementzeitraum deaktivieren, indem Du ihn deaktivierst. Durch Ändern der Preise eines Levels wird weder die aktuelle Abonnementrate noch der Plan für vorhandene Standorte in diesem Level geändert. Wenn Du eine Ebene löschst, behalten vorhandene Webseiten in dieser Ebene die Funktionen aller Ebenen unter ihrer aktuellen Ebenennummer bei.', 'psts' ) ?></span>
 		<table width="100%" cellpadding="3" cellspacing="3" class="widefat level-settings" id="prosites-level-list">
 			<thead>
 			<tr>
@@ -4914,7 +4914,7 @@ function admin_modules() {
 	 *
 	 * @since 3.3.7
 	 *
-	 * @return settings page for Pro Sites Checkout Page
+	 * @return settings page for PS Bloghosting Checkout Page
 	 */
 	function pricing_table_settings() {
 		if ( ! is_super_admin() ) {
@@ -4937,7 +4937,7 @@ function admin_modules() {
 	}
 
 	/**
-	 * Checks if a particular user role is allowed to perform Pro Sites management
+	 * Checks if a particular user role is allowed to perform PS Bloghosting management
 	 *
 	 * @param $user_id
 	 * @param $roles

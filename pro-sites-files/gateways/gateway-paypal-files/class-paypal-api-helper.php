@@ -435,7 +435,7 @@ if ( ! class_exists( 'PaypalApiHelper' ) ) {
 			$query_string = "METHOD=" . urlencode( $methodName ) . "&VERSION=63.0&PWD=" . urlencode( $psts->get_setting( 'pypl_api_pass' ) ) . "&USER=" . urlencode( $psts->get_setting( 'pypl_api_user' ) ) . "&SIGNATURE=" . urlencode( $psts->get_setting( 'pypl_api_sig' ) ) . $nvpStr;
 
 			//build args
-			$args['user-agent']  = "Pro Sites: https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/ | PayPal Express Gateway";
+			$args['user-agent']  = "PS Bloghosting: https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/ | PayPal Express Gateway";
 			$args['body']        = $query_string;
 			$args['sslverify']   = false; //many servers don't have an updated CA bundle
 			$args['timeout']     = 60;
@@ -445,7 +445,7 @@ if ( ! class_exists( 'PaypalApiHelper' ) ) {
 			$response = wp_remote_post( $API_Endpoint, $args );
 
 			if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
-				trigger_error( 'Pro Sites: Problem contacting PayPal API - ' . ( is_wp_error( $response ) ? $response->get_error_message() : 'Response code: ' . wp_remote_retrieve_response_code( $response ) ), E_USER_WARNING );
+				trigger_error( 'PS Bloghosting: Problem contacting PayPal API - ' . ( is_wp_error( $response ) ? $response->get_error_message() : 'Response code: ' . wp_remote_retrieve_response_code( $response ) ), E_USER_WARNING );
 
 				return false;
 			} else {

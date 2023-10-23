@@ -13,7 +13,7 @@
 /**
  * Class ProSites_GDPR
  *
- * Class that handles GDPR for Pro Sites.
+ * Class that handles GDPR for PS Bloghosting.
  */
 class ProSites_GDPR {
 
@@ -50,7 +50,7 @@ class ProSites_GDPR {
 
 
 	/**
-	 * Add privacy policy content for Pro Sites.
+	 * Add privacy policy content for PS Bloghosting.
 	 *
 	 * Uses wp_add_privacy_policy_content
 	 *
@@ -70,13 +70,13 @@ class ProSites_GDPR {
 
 		// Add to privacy policy page.
 		wp_add_privacy_policy_content(
-			'Pro Sites',
+			'PS Bloghosting',
 			wp_kses_post( wpautop( $content, false ) )
 		);
 	}
 
 	/**
-	 * Add new checkbox to Pro Sites registration.
+	 * Add new checkbox to PS Bloghosting registration.
 	 *
 	 * New checkbox that asks user to agree to our privacy policy.
 	 * The text link will lead to Privacy Policy page.
@@ -187,7 +187,7 @@ class ProSites_GDPR {
 	}
 
 	/**
-	 * Register personal data exporter for Pro Sites.
+	 * Register personal data exporter for PS Bloghosting.
 	 *
 	 * @param array $exporters Current registered exporters.
 	 *
@@ -206,7 +206,7 @@ class ProSites_GDPR {
 	}
 
 	/**
-	 * Register eraser for Pro Sites.
+	 * Register eraser for PS Bloghosting.
 	 *
 	 * @param array $erasers Current registered erasers.
 	 *

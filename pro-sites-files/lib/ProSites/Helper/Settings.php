@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Pro Sites Settings Helper.
+ * PS Bloghosting Settings Helper.
  *
  * @package    Helper
  * @subpackage Settings

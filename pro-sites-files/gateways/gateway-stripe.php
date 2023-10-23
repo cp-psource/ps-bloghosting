@@ -1,6 +1,6 @@
 <?php
 /**
- * Pro Sites (Gateway: Stripe Payment Gateway).
+ * PS Bloghosting (Gateway: Stripe Payment Gateway).
  *
  * @package    Gateways
  * @subpackage Stripe
@@ -295,7 +295,7 @@ class ProSites_Gateway_Stripe {
 	 * @return void
 	 */
 	private function init_lib() {
-		// Pro Sites global object.
+		// PS Bloghosting global object.
 		global $psts;
 
 		// Setup the Stripe library and custom classes.
@@ -324,7 +324,7 @@ class ProSites_Gateway_Stripe {
 			// Set API version.
 			Stripe\Stripe::setApiVersion( $this->api_version );
 			// Set app info. This name should not be translated.
-			Stripe\Stripe::setAppInfo( 'Pro Sites', $psts->version, network_home_url() );
+			Stripe\Stripe::setAppInfo( 'PS Bloghosting', $psts->version, network_home_url() );
 		}
 	}
 
@@ -384,9 +384,9 @@ class ProSites_Gateway_Stripe {
 	}
 
 	/**
-	 * Perform actions when 'Pro Sites' > 'Settings' update.
+	 * Perform actions when 'PS Bloghosting' > 'Settings' update.
 	 *
-	 * In this example, update Stripe plans with Pro Sites levels.
+	 * In this example, update Stripe plans with PS Bloghosting levels.
 	 *
 	 * @param string $gateway Current gateway.
 	 *
@@ -415,7 +415,7 @@ class ProSites_Gateway_Stripe {
 		// Delete the blog data from DB.
 		self::$stripe_customer->delete_db_customer( $blog_id );
 
-		// Clear all Pro Sites cache.
+		// Clear all PS Bloghosting cache.
 		ProSites_Helper_Cache::refresh_cache();
 	}
 
@@ -433,7 +433,7 @@ class ProSites_Gateway_Stripe {
 		// Cancel the blog subscription.
 		self::$stripe_subscription->cancel_blog_subscription( $blog_id, true, false, $display_message );
 
-		// Clear all Pro Sites cache.
+		// Clear all PS Bloghosting cache.
 		ProSites_Helper_Cache::refresh_cache();
 	}
 
@@ -450,14 +450,14 @@ class ProSites_Gateway_Stripe {
 		// Cancel the blog subscription in Stripe.
 		self::$stripe_subscription->cancel_blog_subscription( $blog_id );
 
-		// Clear all Pro Sites cache.
+		// Clear all PS Bloghosting cache.
 		ProSites_Helper_Cache::refresh_cache();
 	}
 
 	/**
 	 * Settings page for the Stripe gateway.
 	 *
-	 * Renders the Stripe settings for 'Pro Sites' > 'Payment Gateways' > 'Stripe'.
+	 * Renders the Stripe settings for 'PS Bloghosting' > 'Payment Gateways' > 'Stripe'.
 	 * Settings markup is in separate view file.
 	 *
 	 * @since 3.6.1
@@ -818,7 +818,7 @@ class ProSites_Gateway_Stripe {
 	}
 
 	/**
-	 * Show admin notices for Pro Sites.
+	 * Show admin notices for PS Bloghosting.
 	 *
 	 * If payment notifications are pending from Stripe, or if current
 	 * site is on trial, show admin notice.
@@ -2433,7 +2433,7 @@ class ProSites_Gateway_Stripe {
 	}
 
 	/**
-	 * Get Pro Sites coupon data if a coupon is applied.
+	 * Get PS Bloghosting coupon data if a coupon is applied.
 	 *
 	 * We need to validate the coupon code and then get the
 	 * coupon object.

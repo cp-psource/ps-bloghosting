@@ -3571,15 +3571,15 @@ msgid "Privatsphäre:"
 msgstr ""
 
 #: pro-sites-files/gateways/gateway-manual.php:376
-msgid "Pro Sites Manual Payment Submission"
+msgid "PS Bloghosting Manual Payment Submission"
 msgstr ""
 
 #: pro-sites-files/gateways/gateway-manual.php:341
-msgid "Pro Sites Manual Payment Submission for Plan update"
+msgid "PS Bloghosting Manual Payment Submission for Plan update"
 msgstr ""
 
 #: pro-sites-files/lib/psts_pricing_table_admin.php:320
-msgid "Pro Sites Pricing Table Settings"
+msgid "PS Bloghosting Pricing Table Settings"
 msgstr ""
 
 #: pro-sites-files/modules/badge-widget.php:14
@@ -4277,7 +4277,7 @@ msgstr ""
 #: pro-sites-files/gateways/gateway-manual.php:409
 #, php-format
 msgid ""
-"The user \"%s\" has submitted a manual payment request via the Pro Sites "
+"The user \"%s\" has submitted a manual payment request via the PS Bloghosting "
 "checkout form."
 msgstr ""
 

@@ -632,7 +632,7 @@ if ( ! class_exists( 'ProSites_View_Settings' ) ) {
 //		}
 
 		/**
-		 * 'Pro Sites Widget'
+		 * 'PS Bloghosting Widget'
 		 *
 		 * @return string
 		 */

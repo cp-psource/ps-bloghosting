@@ -244,7 +244,7 @@ class ProSites_Stripe_Subscription {
 	}
 
 	/**
-	 * Get subscription id from Pro Sites db.
+	 * Get subscription id from PS Bloghosting db.
 	 *
 	 * @param int  $blog_id Blog ID.
 	 * @param bool $force   Force from Stripe.

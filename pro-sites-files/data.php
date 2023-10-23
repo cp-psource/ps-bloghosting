@@ -1,6 +1,6 @@
 <?php
 /*
-Pro Sites Data Structures
+PS Bloghosting Data Structures
 */
 
 //country list

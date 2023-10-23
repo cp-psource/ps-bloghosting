@@ -410,7 +410,7 @@ class ProSites_Stripe_Plan {
 	}
 
 	/**
-	 * Sync Pro Sites levels with Stripe plans.
+	 * Sync PS Bloghosting levels with Stripe plans.
 	 *
 	 * If levels changed, we need to make this happen in Stripe
 	 * also. All the existing subscriptions will remain same unless
