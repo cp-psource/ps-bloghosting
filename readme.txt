@@ -4,7 +4,7 @@ Donate link: https://n3rds.work/spendenaktionen/unterstuetze-unsere-psource-free
 Tags: multisite, blogvorlagen, classicpress, wordpress, psource
 Requires at least: 3.8
 Tested up to: 5.6
-Stable tag: 4.0.9
+Stable tag: 4.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -88,25 +88,33 @@ Halte Dich mit unserem [Newsletter](https://n3rds.work/webmasterservice-n3rdswor
 
 == ChangeLog ==
 
-= 4.0.9 = DerN3rd =
+= 4.1.0 =
+
+* PhP Fixes
+* jQuery Fixes
+* README.md 
+* Textkorrekturen
+* Fix Premium Themes
+
+= 4.0.9 =
 
 * CSS Anpassungen für Tooltips Einstellungen
 * Textanpassungen
 * Fix: Unsupported operand types
 * Fix: PHP Deprecated:  Required parameter
 
-= 4.0.8 = DerN3rd =
+= 4.0.8 =
 
 * Getestet PhP8.1
 * Fix Deprecated: trim()
 * Fixes für PhP8
 * Textanpassungen
 
-= 4.0.7 = DerN3rd =
+= 4.0.7 =
 
 * Public release
 
-= 4.0.6 = DerN3rd =
+= 4.0.6 =
 
 * Fix depracated-create_function
 * Übersetzt
