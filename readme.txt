@@ -92,6 +92,7 @@ Halte Dich mit unserem [Newsletter](https://n3rds.work/webmasterservice-n3rdswor
 
 * Fix: Required parameter
 * Update: PSOURCE Updater
+* Fix: Syntax-Fehler
 
 = 4.1.0 =
 

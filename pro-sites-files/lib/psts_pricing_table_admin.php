@@ -45,56 +45,64 @@ class ProSites_Pricing_Table_Admin extends WP_List_Table {
 
 	function column_default( $item, $column_name ) {
 		global $psts;
+	
 		$field = '';
+	
 		switch ( $column_name ) {
 			case 'psts_co_order_id':
-				$field = '<span class="' . $column_name . '" data-order="' . $item [ $column_name ] . '">' . $item [ $column_name ] . '</span>';
+				$field = '<span class="' . $column_name . '" data-order="' . $item[ $column_name ] . '">' . $item[ $column_name ] . '</span>';
 				break;
 			case 'psts_co_visible':
-				global $$item ['psts_co_class_name'];
+				global ${$item['psts_co_class_name']};
+	
 				//Check if class has some level settings
-				$default_value = ( method_exists( $$item ['psts_co_class_name'], 'required_level' ) && $item ['psts_co_level_id'] >= $$item ['psts_co_class_name']->required_level() ) ? "enabled" : "disabled";
-
-				$check_value = $psts->get_setting( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_visible' );
-
+				$default_value = ( method_exists( ${$item['psts_co_class_name']}, 'required_level' ) && $item['psts_co_level_id'] >= ${$item['psts_co_class_name']}->required_level() ) ? "enabled" : "disabled";
+	
+				$check_value = $psts->get_setting( 'pricing_table_module_' . $item['psts_co_class_name'] . '_visible' );
+	
 				//Check if there is a setting by user, otherwise check for default
 				$check_value = $check_value ? $check_value : ( $default_value ? $default_value : "disabled" );
-
+	
 				if ( strtolower( $_SERVER['REQUEST_METHOD'] ) == 'post' ) {
-					if ( array_key_exists( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_visible', $_POST['psts'] ) ) {
-						$check_value = $_POST['psts'][ 'pricing_table_module_' . $item ['psts_co_class_name'] . '_visible' ];
+					if ( array_key_exists( 'pricing_table_module_' . $item['psts_co_class_name'] . '_visible', $_POST['psts'] ) ) {
+						$check_value = $_POST['psts'][ 'pricing_table_module_' . $item['psts_co_class_name'] . '_visible' ];
 					} else {
 						$check_value = "";
-						$psts->update_setting( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_visible', $check_value );
+						$psts->update_setting( 'pricing_table_module_' . $item['psts_co_class_name'] . '_visible', $check_value );
 					}
 				}
-				$field = '<input type="checkbox" id="psts[pricing_table_module_' . $item ['psts_co_class_name'] . '_visible]" name="psts[pricing_table_module_' . $item ['psts_co_class_name'] . '_visible]" value="enabled" ' . checked( $check_value, 'enabled', false ) . ' />';
+	
+				$field = '<input type="checkbox" id="psts[pricing_table_module_' . $item['psts_co_class_name'] . '_visible]" name="psts[pricing_table_module_' . $item['psts_co_class_name'] . '_visible]" value="enabled" ' . checked( $check_value, 'enabled', false ) . ' />';
 				break;
 			case 'psts_co_has_thick':
-				$check_value = $psts->get_setting( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_has_thick_' . $item ['psts_co_level_id'] ) ? $psts->get_setting( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_has_thick_' . $item ['psts_co_level_id'] ) : "disabled";
+				$check_value = $psts->get_setting( 'pricing_table_module_' . $item['psts_co_class_name'] . '_has_thick_' . $item['psts_co_level_id'] ) ? $psts->get_setting( 'pricing_table_module_' . $item['psts_co_class_name'] . '_has_thick_' . $item['psts_co_level_id'] ) : "disabled";
+				
 				if ( strtolower( $_SERVER['REQUEST_METHOD'] ) == 'post' ) {
-					if ( array_key_exists( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_has_thick_' . $item ['psts_co_level_id'], $_POST['psts'] ) ) {
-						$check_value = $_POST['psts'][ 'pricing_table_module_' . $item ['psts_co_class_name'] . '_has_thick_' . $item ['psts_co_level_id'] ];
+					if ( array_key_exists( 'pricing_table_module_' . $item['psts_co_class_name'] . '_has_thick_' . $item['psts_co_level_id'], $_POST['psts'] ) ) {
+						$check_value = $_POST['psts'][ 'pricing_table_module_' . $item['psts_co_class_name'] . '_has_thick_' . $item['psts_co_level_id'] ];
 					} else {
 						$check_value = "";
-						$psts->update_setting( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_has_thick_' . $item ['psts_co_level_id'], $check_value );
+						$psts->update_setting( 'pricing_table_module_' . $item['psts_co_class_name'] . '_has_thick_' . $item['psts_co_level_id'], $check_value );
 					}
 				}
-				$field = '<input type="checkbox" id="psts[pricing_table_module_' . $item ['psts_co_class_name'] . '_has_thick_' . $item ['psts_co_level_id'] . ']" name="psts[pricing_table_module_' . $item ['psts_co_class_name'] . '_has_thick_' . $item ['psts_co_level_id'] . ']" value="enabled" ' . checked( $check_value, 'enabled', false ) . ' />';
+	
+				$field = '<input type="checkbox" id="psts[pricing_table_module_' . $item['psts_co_class_name'] . '_has_thick_' . $item['psts_co_level_id'] . ']" name="psts[pricing_table_module_' . $item['psts_co_class_name'] . '_has_thick_' . $item['psts_co_level_id'] . ']" value="enabled" ' . checked( $check_value, 'enabled', false ) . ' />';
 				break;
 			case 'psts_co_description':
-				$field_content = $psts->get_setting( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_description' ) ? $psts->get_setting( 'pricing_table_module_' . $item ['psts_co_class_name'] . '_description' ) : $item [ $column_name ];
+				$field_content = $psts->get_setting( 'pricing_table_module_' . $item['psts_co_class_name'] . '_description' ) ? $psts->get_setting( 'pricing_table_module_' . $item['psts_co_class_name'] . '_description' ) : $item [ $column_name ];
 				$field         = strip_tags( $field_content );
+	
 				if ( $item ['psts_co_class_name'] == $this->edit_item ) {
 					$field = wp_editor( $item[ $column_name ], "psts_pricing_table_module_" . $item ['psts_co_class_name'] . '_description' );
 				}
 				break;
 			case 'psts_co_included':
-				//Text for modules, in place of right or wrong mark
 				$cur_level = 1;
+	
 				if ( ! empty ( $_REQUEST['level_id'] ) ) {
 					$cur_level = (int) $_REQUEST['level_id'];
 				}
+	
 				if ( ( $item ['psts_co_class_name'] == $this->edit_item ) && ( $item ['psts_co_level_id'] == $cur_level ) ) {
 					$field_value = $this->get_include_text( $item ['psts_co_class_name'], $item ['psts_co_level_id'] );
 					$field       = '<textarea id="psts[pricing_table_module_' . $item ['psts_co_class_name'] . '_included_' . $item ['psts_co_level_id'] . ']" name="psts[pricing_table_module_' . $item ['psts_co_class_name'] . '_included_' . $item ['psts_co_level_id'] . ']" cols="14">' . $field_value . '</textarea>';
@@ -107,7 +115,7 @@ class ProSites_Pricing_Table_Admin extends WP_List_Table {
 			default:
 				$field = $item[ $column_name ];
 		}
-
+	
 		return $field;
 	}
 
