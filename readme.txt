@@ -88,6 +88,11 @@ Halte Dich mit unserem [Newsletter](https://n3rds.work/webmasterservice-n3rdswor
 
 == ChangeLog ==
 
+= 4.1.1 =
+
+* Fix: Required parameter
+* Update: PSOURCE Updater
+
 = 4.1.0 =
 
 * PhP Fixes
