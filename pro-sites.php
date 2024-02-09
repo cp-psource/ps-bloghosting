@@ -1,20 +1,19 @@
 <?php
 /**
  * Plugin Name: PS-Bloghosting
- * Plugin URI:  https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/
+ * Plugin URI:  https://cp-psource.github.io/ps-bloghosting/
  * Description: Das ultimative Bloghosting-Plugin für Multisites verwandelt reguläre Websites in mehrere PRO-Webseite-Abonnementstufen, die Zugriff auf Speicherplatz, Premium-Themen, Premium-Plugins und vieles mehr bieten!
  * Version:     4.1.0
- * Author:      WMS N@W
- * Author URI:  https://n3rds.work/
+ * Author:      PSOURCE
+ * Author URI:  https://github.com/cp-psource
  * Text Domain: psts
  * Domain Path: /pro-sites-files/languages/
  * Network:     true
  * 
  *
  *
- * Copyright 2020 WMS N@W (https://n3rds.work)
- * Author - DerN3rd, Aaron Edwards
- * Contributors - Rheinard Korf, Jonathan Cowher, Carlos Vences, Andrew Billits, Umesh Kumar, Joel James
+ * Copyright 2020-2024 PSOURCE (https://github.com/cp-psource)
+ * Author - DerN3rd
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
  * the Free Software Foundation.
@@ -29,13 +28,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-require 'psource/psource-plugin-update/psource-plugin-updater.php';
-use Psource\PluginUpdateChecker\v5\PucFactory;
-$MyUpdateChecker = PucFactory::buildUpdateChecker(
-	'https://n3rds.work//wp-update-server/?action=get_metadata&slug=ps-bloghosting', 
-	__FILE__, 
-	'ps-bloghosting' 
-);
+ require 'psource/psource-plugin-update/plugin-update-checker.php';
+ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+ 
+ $myUpdateChecker = PucFactory::buildUpdateChecker(
+	 'https://github.com/cp-psource/ps-bloghosting',
+	 __FILE__,
+	 'ps-bloghosting'
+ );
+ 
+ //Set the branch that contains the stable release.
+ $myUpdateChecker->setBranch('master');
 
 class ProSites {
 

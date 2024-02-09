@@ -6,7 +6,7 @@ msgstr ""
 "POT-Creation-Date: 2022-12-03 22:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: DerN3rd <webmaster@n3rds.work>\n"
-"Language-Team: WMS N@W\n"
+"Language-Team: PSOURCE\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "MIME-Version: 1.0\n"
@@ -4965,7 +4965,7 @@ msgid "Wird vor dem Beitrags- und Seiteninhalt angezeigt."
 msgstr ""
 
 #. Author of the plugin
-msgid "WMS N@W"
+msgid "PSOURCE"
 msgstr ""
 
 #: pro-sites-files/lib/ProSites/Helper/Tax.php:83

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright WMS N@W (https://n3rds.work/)
+ * @copyright PSOURCE (https://n3rds.work/)
  *
  * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
  *

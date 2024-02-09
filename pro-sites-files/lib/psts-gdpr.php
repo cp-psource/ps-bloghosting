@@ -6,7 +6,7 @@
  *
  * @author        DerN3rd <webmaster@n3rds.work>
  *
- * @copyright (c) 2020, WMS N@W (https://n3rds.work)
+ * @copyright (c) 2020, PSOURCE (https://n3rds.work)
  */
 
 
