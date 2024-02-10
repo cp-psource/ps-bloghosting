@@ -3,7 +3,7 @@
  * Plugin Name: PS-Bloghosting
  * Plugin URI:  https://cp-psource.github.io/ps-bloghosting/
  * Description: Das ultimative Bloghosting-Plugin für Multisites verwandelt reguläre Websites in mehrere PRO-Webseite-Abonnementstufen, die Zugriff auf Speicherplatz, Premium-Themen, Premium-Plugins und vieles mehr bieten!
- * Version:     4.1.0
+ * Version:     4.1.1
  * Author:      PSOURCE
  * Author URI:  https://github.com/cp-psource
  * Text Domain: psts
@@ -42,7 +42,7 @@
 
 class ProSites {
 
-	var $version = '4.1.0';
+	var $version = '4.1.1';
 	var $location;
 	var $language;
 	var $plugin_dir = '';
