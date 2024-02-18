@@ -347,8 +347,7 @@ th.psts-help-div {
 
 /* Paypal */
 .psts-paypal-header .help_tip {
-    right: 45px;
-    top: 23px;
+    top: 20px;
 }
 
 .psts-paypal-header .psts-help-text-wrapper {
