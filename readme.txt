@@ -41,6 +41,10 @@ Generiere automatisch Preise und Feature-Tabellen und lege schnell alles zusamme
 
 == ChangeLog ==
 
+= 4.1.2 =
+
+* Fix: CSS Tooltips
+
 = 4.1.1 =
 
 * Fix: Required parameter
