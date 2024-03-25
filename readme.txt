@@ -45,6 +45,8 @@ Generiere automatisch Preise und Feature-Tabellen und lege schnell alles zusamme
 
 * Fix: CSS Tooltips
 * Fix: Deprecated Classes
+* Update: Updater -> 1.3
+* Deprecated Calling get_class() 
 
 = 4.1.1 =
 

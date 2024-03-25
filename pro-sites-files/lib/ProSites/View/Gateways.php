@@ -1,43 +1,43 @@
 <?php
 
 if ( ! class_exists( 'ProSites_View_Gateways' ) ) {
-	class ProSites_View_Gateways {
+    class ProSites_View_Gateways {
 
-		public static function render_page() {
+        public static function render_page() {
 
-			if ( ! is_super_admin() ) {
-				echo "<p>" . __( 'Netter Versuch...', 'psts' ) . "</p>"; //If accessed properly, this message doesn't appear.
-				return false;
-			}
+            if ( ! is_super_admin() ) {
+                echo "<p>" . __( 'Netter Versuch...', 'psts' ) . "</p>"; //If accessed properly, this message doesn't appear.
+                return false;
+            }
 
-			// Might move this to a controller, not sure if needed yet.
-			ProSites_Model_Gateways::process_form();
+            // Might move this to a controller, not sure if needed yet.
+            ProSites_Model_Gateways::process_form();
 
-			?>
-			<form method="post" action="">
-				<?php
+            ?>
+            <form method="post" action="">
+                <?php
 
-				$page_header_options = array(
-					'title'       => __( 'Bloghosting Gateway-Einstellungen', 'psts' ),
-					'desc'        => '',
-					'page_header' => true,
-				);
+                $page_header_options = array(
+                    'title'       => __( 'Bloghosting Gateway-Einstellungen', 'psts' ),
+                    'desc'        => '',
+                    'page_header' => true,
+                );
 
-				$options = array(
-					'header_save_button'  => true,
-					'section_save_button' => true,
-					'nonce_name'          => 'psts_gateways',
-					'button_name'         => 'gateways',
-				);
+                $options = array(
+                    'header_save_button'  => true,
+                    'section_save_button' => true,
+                    'nonce_name'          => 'psts_gateways',
+                    'button_name'         => 'gateways',
+                );
 
-				ProSites_Helper_Tabs_Gateways::render( get_class(), $page_header_options, $options );
+                ProSites_Helper_Tabs_Gateways::render( __CLASS__, $page_header_options, $options );
 
-				?>
+                ?>
 
-			</form>
-			<?php
+            </form>
+            <?php
 
-		}
+        }
 
 		/**
 		 * Multi-Gateway Preferences

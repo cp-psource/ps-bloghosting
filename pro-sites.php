@@ -28,17 +28,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
- require 'psource/psource-plugin-update/plugin-update-checker.php';
- use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+/**
+ * @@@@@@@@@@@@@@@@@ PS UPDATER 1.3 @@@@@@@@@@@
+ **/
+require 'psource/psource-plugin-update/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
  
- $myUpdateChecker = PucFactory::buildUpdateChecker(
-	 'https://github.com/cp-psource/ps-bloghosting',
-	 __FILE__,
-	 'ps-bloghosting'
- );
+$myUpdateChecker = PucFactory::buildUpdateChecker(
+	'https://github.com/cp-psource/ps-bloghosting',
+	__FILE__,
+	'ps-bloghosting'
+);
  
- //Set the branch that contains the stable release.
- $myUpdateChecker->setBranch('master');
+//Set the branch that contains the stable release.
+$myUpdateChecker->setBranch('master');
+
+/**
+ * @@@@@@@@@@@@@@@@@ ENDE PS UPDATER 1.3 @@@@@@@@@@@
+ **/
 
 class ProSites {
 
