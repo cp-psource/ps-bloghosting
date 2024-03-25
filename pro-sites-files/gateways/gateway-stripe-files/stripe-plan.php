@@ -6,10 +6,10 @@ defined( 'WPINC' ) || die;
 /**
  * The stripe plans functionality of the plugin.
  *
- * @link   https://n3rds.work/project/pro-sites
+ * @link   https://cp-psource.github.io/ps-bloghosting/
  * @since  3.6.1
  *
- * @author Joel James <joel@incsub.com>
+ * @author PSOURCE
  */
 class ProSites_Stripe_Plan {
 

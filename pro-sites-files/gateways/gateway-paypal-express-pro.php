@@ -2071,12 +2071,11 @@ class ProSites_Gateway_PayPalExpressPro {
 		$display_paypal_pro_option = $psts->get_setting('display_paypal_pro_option', false);
 		?>
 		<div class="inside">
-			<p><?php _e( 'Unlike PayPal Pro, there are no additional fees to use Express Checkout, though you may need to do a free upgrade to a business account. <a target="_blank" href="https://cms.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=developer/e_howto_api_ECGettingStarted">More Info &raquo;</a>', 'psts' ); ?></p>
 
-			<p><?php printf( __( 'To use PayPal Express Checkout or Pro you must <a href="https://cms.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=developer/e_howto_admin_IPNSetup#id089EG030E5Z" target="_blank">manually turn on IPN notifications</a> and enter your IPN url (<strong>%s</strong>) in your PayPal profile (you must also do this in your sandbox account when testing).', 'psts' ), network_site_url( 'wp-admin/admin-ajax.php?action=psts_pypl_ipn', 'admin' ) ); ?></p>
+			<p><?php printf( __( 'Um PayPal Express Checkout oder Pro nutzen zu können, musst Du <a href="https://developer.paypal.com/api/nvp-soap/ipn/ht-ipn/" target="_blank">IPN-Benachrichtigungen manuell aktivieren</a> und gib Deine IPN-URL (<strong>%s</strong>) in Dein PayPal-Profil ein (Du musst dies beim Testen auch in Deinem Sandbox-Konto tun).', 'psts' ), network_site_url( 'wp-admin/admin-ajax.php?action=psts_pypl_ipn', 'admin' ) ); ?></p>
 			<table class="form-table">
 				<tr valign="top">
-					<th scope="row"><?php _e( 'PayPal Site', 'psts' ) ?></th>
+					<th scope="row"><?php _e( 'PayPal Land', 'psts' ) ?></th>
 					<td><select name="psts[pypl_site]" class="chosen">
 							<?php
 							$paypal_site = $psts->get_setting( 'pypl_site' );
@@ -2091,41 +2090,41 @@ class ProSites_Gateway_PayPalExpressPro {
 					</td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><?php _e( 'Paypal Currency', 'psts' ) ?></th>
+					<th scope="row"><?php _e( 'Paypal Währung', 'psts' ) ?></th>
 					<td>
 						<p>
 							<strong><?php echo self::currency(); ?></strong> &ndash;
-                            <span class="description"><?php printf( __( '<a href="%s">Change Currency</a>', 'psts' ), network_admin_url( 'admin.php?page=psts-settings&tab=payment' ) ); ?></span>
+                            <span class="description"><?php printf( __( '<a href="%s">Währung ändern</a>', 'psts' ), network_admin_url( 'admin.php?page=psts-settings&tab=payment' ) ); ?></span>
 						</p>
 					</td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><?php _e( 'PayPal Mode', 'psts' ) ?></th>
+					<th scope="row"><?php _e( 'PayPal Modus', 'psts' ) ?></th>
 					<td><select name="psts[pypl_status]" class="chosen">
 							<option
-								value="live"<?php selected( $psts->get_setting( 'pypl_status' ), 'live' ); ?>><?php _e( 'Live Site', 'psts' ) ?></option>
+								value="live"<?php selected( $psts->get_setting( 'pypl_status' ), 'live' ); ?>><?php _e( 'Live Modus', 'psts' ) ?></option>
 							<option
-								value="test"<?php selected( $psts->get_setting( 'pypl_status' ), 'test' ); ?>><?php _e( 'Test Mode (Sandbox)', 'psts' ) ?></option>
+								value="test"<?php selected( $psts->get_setting( 'pypl_status' ), 'test' ); ?>><?php _e( 'Test Modus (Sandbox)', 'psts' ) ?></option>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><?php _e( 'PayPal API Credentials', 'psts' ) ?></th>
+					<th scope="row"><?php _e( 'PayPal-API-Anmeldeinformationen', 'psts' ) ?></th>
 					<td>
 						<span
-							class="description"><?php _e( 'You must login to PayPal and create an API signature to get your credentials. <a target="_blank" href="https://developer.paypal.com/docs/classic/api/apiCredentials/">Instructions &raquo;</a>', 'psts' ) ?></span>
+							class="description"><?php _e( 'Du musst Dich bei PayPal anmelden und eine API-Signatur erstellen, um Deine Anmeldeinformationen zu erhalten. <a target="_blank" href="https://developer.paypal.com/docs/classic/api/apiCredentials/">Anweisungen &raquo;</a>', 'psts' ) ?></span>
 
-						<p><label><?php _e( 'API Username', 'psts' ) ?><br/>
+						<p><label><?php _e( 'API-Benutzername', 'psts' ) ?><br/>
 								<input value="<?php esc_attr_e( $psts->get_setting( "pypl_api_user" ) ); ?>"
 								       style="width: 100%; max-width: 500px;" name="psts[pypl_api_user]" type="text"/>
 							</label></p>
 
-						<p><label><?php _e( 'API Password', 'psts' ) ?><br/>
+						<p><label><?php _e( 'API Passwort', 'psts' ) ?><br/>
 								<input value="<?php esc_attr_e( $psts->get_setting( "pypl_api_pass" ) ); ?>"
 								       style="width: 100%; max-width: 500px;" name="psts[pypl_api_pass]" type="text"/>
 							</label></p>
 
-						<p><label><?php _e( 'Signature', 'psts' ) ?><br/>
+						<p><label><?php _e( 'Signatur', 'psts' ) ?><br/>
 								<input value="<?php esc_attr_e( $psts->get_setting( "pypl_api_sig" ) ); ?>"
 								       style="width: 100%; max-width: 500px;" name="psts[pypl_api_sig]" type="text"/>
 							</label></p>
@@ -2133,7 +2132,7 @@ class ProSites_Gateway_PayPalExpressPro {
 				</tr>
 				<?php if($display_paypal_pro_option): ?>
 					<tr>
-						<th scope="row"><?php _e( 'Enable PayPal Pro', 'psts' ) ?></th>
+						<th scope="row"><?php _e( 'Aktiviere PayPal Pro', 'psts' ) ?></th>
 						<td>
 							<span
 								class="description"><?php _e( 'PayPal Website Payments Pro 3.0 allows you to seemlessly accept credit cards on your site, and gives you the most professional look with a widely accepted payment method. There are a few requirements you must meet to use PayPal Website Payments Pro:', 'psts' ) ?></span>
@@ -2156,7 +2155,7 @@ class ProSites_Gateway_PayPalExpressPro {
 				<?php endif; ?>
 				<tr>
 					<th scope="row"
-					    class="psts-help-div psts-paypal-header"><?php echo __( 'PayPal Header Image (optional)', 'psts' ) . $psts->help_text( __( 'https url of an 750 x 90 image displayed at the top left of the payment page. If a image is not specified, the business name is displayed.', 'psts' ) ); ?></th>
+					    class="psts-help-div psts-paypal-header"><?php echo __( 'PayPal-Header-Bild (optional)', 'psts' ) . $psts->help_text( __( 'https-URL eines 750 x 90 Pixel großen Bildes, das oben links auf der Zahlungsseite angezeigt wird. Wenn kein Bild angegeben ist, wird der Firmenname angezeigt.', 'psts' ) ); ?></th>
 					<td>
 						<p>
 							<input value="<?php esc_attr_e( $psts->get_setting( "pypl_header_img" ) ); ?>" size="40"
@@ -2166,17 +2165,17 @@ class ProSites_Gateway_PayPalExpressPro {
 				</tr>
 				<tr>
 					<th scope="row"
-					    class="psts-help-div psts-paypal-checkout-btn"><?php echo __( 'PayPal Checkout Button', 'psts' ) . $psts->help_text( __( 'Choose whether you want to use checkout button based on the locale or the default English button.', 'psts' ) ); ?></th>
+					    class="psts-help-div psts-paypal-checkout-btn"><?php echo __( 'PayPal-Checkout-Button', 'psts' ) . $psts->help_text( __( 'Wähle, ob Du die Checkout-Schaltfläche basierend auf dem Gebietsschema oder die standardmäßige englische Schaltfläche verwenden möchtest.', 'psts' ) ); ?></th>
 					<td>
 						<select name="psts[pypl_checkout_btn]" class="chosen">
-							<option value="default" <?php selected( $psts->get_setting( 'pypl_checkout_btn' ), 'default' ); ?>><?php _e( 'Default', 'psts' ) ?></option>
-							<option value="locale" <?php selected( $psts->get_setting( 'pypl_checkout_btn' ), 'locale' ); ?>><?php _e( 'Locale Button', 'psts' ) ?></option>
+							<option value="default" <?php selected( $psts->get_setting( 'pypl_checkout_btn' ), 'default' ); ?>><?php _e( 'Standard', 'psts' ) ?></option>
+							<option value="locale" <?php selected( $psts->get_setting( 'pypl_checkout_btn' ), 'locale' ); ?>><?php _e( 'Gebietsschema', 'psts' ) ?></option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"
-					    class="psts-help-div psts-paypal-header-border"><?php echo __( 'PayPal Header Border Color (optional)', 'psts' ) . $psts->help_text( __( '6 character hex color for border around the header of the payment page.', 'psts' ) ); ?></th>
+					    class="psts-help-div psts-paypal-header-border"><?php echo __( 'Farbe des PayPal-Kopfzeilenrahmens (optional)', 'psts' ) . $psts->help_text( __( '6-stellige Hexadezimalfarbe für den Rand um die Kopfzeile der Zahlungsseite.', 'psts' ) ); ?></th>
 					<td>
 						<p>
 							<input value="<?php esc_attr_e( $psts->get_setting( "pypl_header_border" ) ); ?>" size="6"
@@ -2186,7 +2185,7 @@ class ProSites_Gateway_PayPalExpressPro {
 				</tr>
 				<tr>
 					<th scope="row"
-					    class="psts-help-div psts-paypal-header-background"><?php echo __( 'PayPal Header Background Color (optional)', 'psts' ) . $psts->help_text( __( '6 character hex color for header background of the payment page.', 'psts' ) ); ?></th>
+					    class="psts-help-div psts-paypal-header-background"><?php echo __( 'Hintergrundfarbe der PayPal-Kopfzeile (optional)', 'psts' ) . $psts->help_text( __( '6-stellige Hexadezimalfarbe für den Kopfzeilenhintergrund der Zahlungsseite.', 'psts' ) ); ?></th>
 					<td>
 						<p>
 							<input value="<?php esc_attr_e( $psts->get_setting( "pypl_header_back" ) ); ?>" size="6"
@@ -2196,7 +2195,7 @@ class ProSites_Gateway_PayPalExpressPro {
 				</tr>
 				<tr>
 					<th scope="row"
-					    class="psts-help-div psts-paypal-background"><?php echo __( 'PayPal Page Background Color (optional)', 'psts' ) . $psts->help_text( __( '6 character hex color for payment page background. Darker colors may not be allowed by PayPal.', 'psts' ) ) ?></th>
+					    class="psts-help-div psts-paypal-background"><?php echo __( 'Hintergrundfarbe der PayPal-Seite (optional)', 'psts' ) . $psts->help_text( __( '6-stellige Hexadezimalfarbe für den Hintergrund der Zahlungsseite. Dunklere Farben werden von PayPal möglicherweise nicht zugelassen.', 'psts' ) ) ?></th>
 					<td>
 						<p>
 							<input value="<?php esc_attr_e( $psts->get_setting( "pypl_page_back" ) ); ?>" size="6"
@@ -2206,7 +2205,7 @@ class ProSites_Gateway_PayPalExpressPro {
 				</tr>
 				<tr valign="top">
 					<th scope="row"
-					    class="psts-help-div psts-paypal-thank-you"><?php echo __( 'Thank You Message', 'psts' ) . $psts->help_text( __( 'Displayed on the page after successful checkout. This is also a good place to paste any conversion tracking scripts like from Google Analytics. - HTML allowed', 'psts' ) ); ?></th>
+					    class="psts-help-div psts-paypal-thank-you"><?php echo __( 'Dankesnachricht', 'psts' ) . $psts->help_text( __( 'Wird nach erfolgreichem Bezahlvorgang auf der Seite angezeigt. Dies ist auch ein guter Ort, um Conversion-Tracking-Skripte wie von Google Analytics einzufügen. - HTML erlaubt', 'psts' ) ); ?></th>
 					<td>
 						<textarea name="psts[pypl_thankyou]" type="text" rows="4" wrap="soft" id="pypl_thankyou"
 						          style="width: 95%"/><?php echo esc_textarea( stripslashes( $psts->get_setting( 'pypl_thankyou' ) ) ); ?></textarea>
@@ -2333,25 +2332,25 @@ class ProSites_Gateway_PayPalExpressPro {
 				if ( isset( $resArray['NEXTBILLINGDATE'] ) ) {
 					$next_billing = date_i18n( get_blog_option( $blog_id, 'date_format' ), strtotime( $resArray['NEXTBILLINGDATE'] ) );
 				} else {
-					$next_billing = __( "None", 'psts' );
+					$next_billing = __( "Keine", 'psts' );
 				}
 
-				$payment_info = sprintf( __( 'Subscription Description: %s', 'psts' ), stripslashes( $resArray['DESC'] ) ) . "\n\n";
+				$payment_info = sprintf( __( 'Abonnementbeschreibung: %s', 'psts' ), stripslashes( $resArray['DESC'] ) ) . "\n\n";
 
 				if ( isset( $resArray['ACCT'] ) ) { //credit card
 					$month = substr( $resArray['EXPDATE'], 0, 2 );
 					$year  = substr( $resArray['EXPDATE'], 2, 4 );
-					$payment_info .= sprintf( __( 'Payment Method: %1$s Card ending in %2$s. Expires %3$s', 'psts' ), $resArray['CREDITCARDTYPE'], $resArray['ACCT'], $month . '/' . $year ) . "\n";
+					$payment_info .= sprintf( __( 'Zahlungsmethode: %1$s Karte mit der Endung %2$s. Läuft %3$s ab', 'psts' ), $resArray['CREDITCARDTYPE'], $resArray['ACCT'], $month . '/' . $year ) . "\n";
 				} else { //paypal
-					$payment_info .= __( 'Payment Method: PayPal Account', 'psts' ) . "\n";
+					$payment_info .= __( 'Zahlungsmethode: PayPal-Konto', 'psts' ) . "\n";
 				}
 
 				if ( $last_payment = $psts->last_transaction( $blog_id ) ) {
-					$payment_info .= sprintf( __( 'Payment Date: %s', 'psts' ), date_i18n( get_blog_option( $blog_id, 'date_format' ), $last_payment['timestamp'] ) ) . "\n";
-					$payment_info .= sprintf( __( 'Payment Amount: %s', 'psts' ), $last_payment['amount'] . ' ' . $psts->get_setting( 'currency' ) ) . "\n";
-					$payment_info .= sprintf( __( 'Payment Transaction ID: %s', 'psts' ), $last_payment['txn_id'] ) . "\n\n";
+					$payment_info .= sprintf( __( 'Zahlungsdatum: %s', 'psts' ), date_i18n( get_blog_option( $blog_id, 'date_format' ), $last_payment['timestamp'] ) ) . "\n";
+					$payment_info .= sprintf( __( 'Zahlungsbetrag: %s', 'psts' ), $last_payment['amount'] . ' ' . $psts->get_setting( 'currency' ) ) . "\n";
+					$payment_info .= sprintf( __( 'Zahlungstransaktions-ID: %s', 'psts' ), $last_payment['txn_id'] ) . "\n\n";
 				}
-				$payment_info .= sprintf( __( 'Next Scheduled Payment Date: %s', 'psts' ), $next_billing ) . "\n";
+				$payment_info .= sprintf( __( 'Nächster geplanter Zahlungstermin: %s', 'psts' ), $next_billing ) . "\n";
 
 			}
 		}

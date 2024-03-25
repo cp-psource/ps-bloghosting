@@ -4,8 +4,13 @@ namespace Stripe\Error;
 
 use Exception;
 
-abstract class Base extends Exception
-{
+abstract class Base extends Exception {
+    public $requestId;
+    public $httpHeaders;
+    public $jsonBody;
+    public $httpBody;
+    public $httpStatus;
+
     public function __construct(
         $message,
         $httpStatus = null,

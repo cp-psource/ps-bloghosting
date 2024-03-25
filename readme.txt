@@ -44,6 +44,7 @@ Generiere automatisch Preise und Feature-Tabellen und lege schnell alles zusamme
 = 4.1.2 =
 
 * Fix: CSS Tooltips
+* Fix: Deprecated Classes
 
 = 4.1.1 =
 

@@ -195,7 +195,7 @@ class ProSites {
 		add_action( 'psts_extend', array( $this, 'send_extension_email' ), 10, 7 );
 
 		// New receipt
-		add_action( 'prosites_transaction_record', array( get_class(), 'send_receipt' ) );
+		add_action( 'prosites_transaction_record', array( self::class, 'send_receipt' ) );
 
 		//Check for manual signup, on blog activation
 		add_action('wpmu_activate_blog', array( $this, 'process_manual_signup'), 10, 5 );

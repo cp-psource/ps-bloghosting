@@ -6,10 +6,10 @@ defined( 'WPINC' ) || die;
 /**
  * The stripe charge functionality of the plugin.
  *
- * @link   https://n3rds.work/project/pro-sites
+ * @link   https://cp-psource.github.io/ps-bloghosting/
  * @since  3.6.1
  *
- * @author Joel James <joel@incsub.com>
+ * @author PSOURCE
  */
 class ProSites_Stripe_Charge {
 
@@ -223,7 +223,7 @@ class ProSites_Stripe_Charge {
 				$customer,
 				$fee,
 				'invoiceitem',
-				__( 'One-time setup fee', 'psts' ),
+				__( 'Einmalige Einrichtungsgebühr', 'psts' ),
 				array(),
 				true
 			);
@@ -399,7 +399,7 @@ class ProSites_Stripe_Charge {
 					// Add new invoice item.
 					$invoice_items->add_item(
 						$amount,
-						sprintf( __( 'Plan Adjustments: %s', 'psts' ), $plan_name )
+						sprintf( __( 'Plananpassungen: %s', 'psts' ), $plan_name )
 					);
 				}
 			}
@@ -407,7 +407,7 @@ class ProSites_Stripe_Charge {
 			// If discount applied, get details.
 			if ( isset( $object->discount->coupon ) && ! empty( $invoice_items ) ) {
 				$discount = ProSites_Gateway_Stripe::format_price( $object->discount->coupon->amount_off, false );
-				$invoice_items->add_item( $discount, __( 'Coupon Applied', 'psts' ) );
+				$invoice_items->add_item( $discount, __( 'Gutschein angewendet', 'psts' ) );
 			}
 
 			// Get invoice items.
