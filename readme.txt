@@ -3,7 +3,7 @@ Contributors: DerN3rd (PSOURCE)
 Tags: multisite, blogvorlagen, classicpress, wordpress, psource
 Requires at least: 3.8
 Tested up to: 6.8.1
-Stable tag: 4.1.2
+Stable tag: 4.1.3
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -40,6 +40,12 @@ Generiere automatisch Preise und Feature-Tabellen und lege schnell alles zusamme
 [GitHub](https://github.com/piestingtal-source/ps-bloghosting)
 
 == ChangeLog ==
+
+= 4.1.3 =
+
+* Update PhP8.2
+* Several Bugfixes
+* New Docs
 
 = 4.1.2 =
 
