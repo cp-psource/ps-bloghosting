@@ -245,7 +245,7 @@ if ( ! class_exists( 'ProSites_View_Gateways' ) ) {
 
 			// Give a 'None' value if required
 			if( $allow_none ) {
-				$names = array_merge( array( 'none' => 'Keines', 'psts' ), $names );
+				$names = array_merge( array( 'none' => __( 'Keines', 'psts' ) ), $names );
 			}
 
 			// And if its empty...

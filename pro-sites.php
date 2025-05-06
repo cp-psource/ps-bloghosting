@@ -282,17 +282,19 @@ class ProSites {
 	}
 
 	function localization() {
-		// Load up the localization file if we're using WordPress in a different language
-		// Place it in this plugin's "languages" folder and name it "psts-[value in wp-config].mo"
-		if ( $this->location == 'plugins' ) {
-			load_plugin_textdomain( 'psts', false, basename( dirname( __FILE__ ) ) . '/pro-sites-files/languages/' );
-		} else if ( $this->location == 'mu-plugins' ) {
-			load_muplugin_textdomain( 'psts', '/pro-sites-files/languages/' );
-		}
+		add_action( 'init', function() {
+			// Load up the localization file if we're using WordPress in a different language
+			// Place it in this plugin's "languages" folder and name it "psts-[value in wp-config].mo"
+			if ( $this->location == 'plugins' ) {
+				load_plugin_textdomain( 'psts', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+			} else if ( $this->location == 'mu-plugins' ) {
+				load_muplugin_textdomain( 'psts', '/languages/' );
+			}
 
-		//setup language code for jquery datepicker translation
-		$temp_locales   = explode( '_', get_locale() );
-		$this->language = ( $temp_locales[0] ) ? $temp_locales[0] : 'en';
+			//setup language code for jquery datepicker translation
+			$temp_locales   = explode( '_', get_locale() );
+			$this->language = ( $temp_locales[0] ) ? $temp_locales[0] : 'en';
+		});
 	}
 
 	function init_vars() {

@@ -26,7 +26,11 @@ if ( ! class_exists( 'ProSites_Helper_Session' ) ) {
 
 			// Make sure session is started
 			if ( ! session_id() ) {
-				session_start();
+				add_action( 'init', function() {
+					if ( ! session_id() ) {
+						session_start();
+					}
+				}, 1 );
 			}
 
 			// WordPress 4.0+ only
