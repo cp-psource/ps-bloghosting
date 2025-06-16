@@ -165,7 +165,13 @@ if ( ! class_exists( 'ProSites_View_Front_Gateway' ) ) {
 			if ( ! empty( $primary_gateway ) && isset ( $gateways[ $primary_gateway ] ) && method_exists( $gateways[ $primary_gateway ]['class'], 'render_gateway' ) ) {
 
 				$content .= '<div id="gateways-1" class="gateway gateway-primary">';
-				$content .= call_user_func( $gateways[ $primary_gateway ]['class'] . '::render_gateway', $render_data, $primary_args, $blog_id, $domain );
+				$content .= call_user_func(
+					$gateways[ $primary_gateway ]['class'] . '::render_gateway',
+					$domain,      // $domain
+					$blog_id,     // $blog_id
+					$primary_args,// $args
+					$render_data  // $render_data
+				);
 
 				if ( $allow_cancel_gateway && ! empty ( $last_gateway ) && $last_gateway !== $primary_gateway && strtolower( $last_gateway ) !== 'trial' ) {
 
@@ -189,12 +195,16 @@ if ( ! class_exists( 'ProSites_View_Front_Gateway' ) ) {
 
 			// Secondary
 			if ( ! empty( $secondary_gateway ) && isset( $gateways[ $secondary_gateway ] ) && method_exists( $gateways[ $secondary_gateway ]['class'], 'render_gateway' ) ) {
-
 				$content .= '<div id="gateways-2" class="gateway gateway-secondary">';
-				$content .= call_user_func( $gateways[ $secondary_gateway ]['class'] . '::render_gateway', $render_data, $secondary_args, $blog_id, $domain, false );
-
+				$content .= call_user_func(
+					$gateways[ $secondary_gateway ]['class'] . '::render_gateway',
+					$domain,
+					$blog_id,
+					$secondary_args,
+					$render_data
+				);
 				if ( $allow_cancel_gateway && ! empty ( $last_gateway ) && $last_gateway !== $secondary_gateway && strtolower( $last_gateway ) !== 'trial' ) {
-//				if( ! empty ( $site_details['last_payment_gateway'] ) && $site_details['last_payment_gateway'] !== $secondary_gateway ) {
+					//if( ! empty ( $site_details['last_payment_gateway'] ) && $site_details['last_payment_gateway'] !== $secondary_gateway ) {
 					$name = "";
 					if ( isset( $gateways[ $site_details['last_payment_gateway'] ] ) && method_exists( $gateways[ $site_details['last_payment_gateway'] ]['class'], 'get_name' ) ) {
 						$name = call_user_func( $gateways[ $site_details['last_payment_gateway'] ]['class'] . '::get_name' );
@@ -213,11 +223,15 @@ if ( ! class_exists( 'ProSites_View_Front_Gateway' ) ) {
 			}
 
 			// Manual
-			if ( ! empty( $manual_gateway ) && method_exists( $gateways[ $primary_gateway ]['class'], 'render_gateway' ) ) {
-
+			if ( ! empty( $manual_gateway ) && method_exists( $gateways[ $manual_gateway ]['class'], 'render_gateway' ) ) {
 				$content .= '<div id="gateways-3" class="gateway gateway-manual">';
-				$content .= call_user_func( $gateways[ $manual_gateway ]['class'] . '::render_gateway', $render_data, $manual_args, $blog_id, $domain, false );
-
+				$content .= call_user_func(
+					$gateways[ $manual_gateway ]['class'] . '::render_gateway',
+					$domain,
+					$blog_id,
+					$manual_args,
+					$render_data
+				);
 				$content .= '</div>';
 			}
 			$content .= '</div>';

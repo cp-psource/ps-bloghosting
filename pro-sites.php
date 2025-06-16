@@ -2899,6 +2899,12 @@ try{
 			return;
 		}
 
+		if (isset($_GET['delete_signup'])) {
+			$key = sanitize_text_field($_GET['delete_signup']);
+			$wpdb->delete($wpdb->signups, array('activation_key' => $key));
+			echo '<div class="updated"><p>Reservierung gelöscht.</p></div>';
+		}
+
 		//add manual log entries
 		if ( isset( $_POST['log_entry'] ) ) {
 			$this->log_action( (int) $_GET['bid'], $current_user->display_name . ': "' . strip_tags( stripslashes( $_POST['log_entry'] ) ) . '"' );
@@ -2992,7 +2998,7 @@ try{
 		<div class="wrap">
 		<script type="text/javascript">
 			jQuery(document).ready(function () {
-				jQuery('input.psts_confirm').click(function () {
+				jQuery('input.psts_confirm').on('click', function () {
 					var answer = confirm("<?php _e('Bist Du sicher, dass Du das wirklich willst?', 'psts'); ?>")
 					if (answer) {
 						return true;
@@ -3336,6 +3342,42 @@ try{
 								</tr>
 							</table>
 						</form>
+						<?php
+						// HIER kommt die Reservierungs-Tabelle hin:
+						global $wpdb;
+$results = $wpdb->get_results("SELECT * FROM {$wpdb->signups} WHERE active = 0");
+?>
+
+<h2>Offene Webseiten-Reservierungen</h2>
+<table class="widefat fixed striped" style="max-width:900px;">
+    <thead>
+        <tr>
+            <th style="width:18%;">Seiten-URL</th>
+            <th style="width:15%;">Slug</th>
+            <th style="width:20%;">Seitentitel</th>
+            <th style="width:20%;">Benutzer (E-Mail)</th>
+            <th style="width:20%;">Aktivierungsschlüssel</th>
+            <th style="width:7%;">Aktion</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (empty($results)): ?>
+            <tr><td colspan="6"><em>Keine offenen Reservierungen gefunden.</em></td></tr>
+        <?php else: foreach ($results as $row): ?>
+            <tr>
+                <td><?php echo esc_html(rtrim($row->domain, '/') . $row->path); ?></td>
+                <td><?php echo esc_html(trim($row->path, '/')); ?></td>
+                <td><?php echo esc_html($row->title); ?></td>
+                <td><?php echo esc_html($row->user_email); ?></td>
+                <td style="font-family:monospace;"><?php echo esc_html($row->activation_key); ?></td>
+                <td>
+                    <a href="<?php echo network_admin_url('admin.php?page=psts&delete_signup=' . urlencode($row->activation_key)); ?>"
+                       onclick="return confirm('Wirklich löschen?');">Löschen</a>
+                </td>
+            </tr>
+        <?php endforeach; endif; ?>
+    </tbody>
+</table>
 					</div>
 				</div>
 			</div>

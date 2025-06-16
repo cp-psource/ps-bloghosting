@@ -285,13 +285,12 @@ class StripeObject implements ArrayAccess, JsonSerializable
         return $params;
     }
 
-    public function jsonSerialize()
-    {
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize() {
         return $this->__toArray(true);
     }
 
-    public function __toJSON()
-    {
+    public function __toJSON()  {
         if (defined('JSON_PRETTY_PRINT')) {
             return json_encode($this->__toArray(true), JSON_PRETTY_PRINT);
         } else {
@@ -299,14 +298,12 @@ class StripeObject implements ArrayAccess, JsonSerializable
         }
     }
 
-    public function __toString()
-    {
+    public function __toString()  {
         $class = get_class($this);
         return $class . ' JSON: ' . $this->__toJSON();
     }
 
-    public function __toArray($recursive = false)
-    {
+    public function __toArray($recursive = false) {
         if ($recursive) {
             return Util\Util::convertStripeObjectToArray($this->_values);
         } else {
