@@ -76,4 +76,42 @@ global $psts;
 			</td>
 		</tr>
 	</table>
+	<?php
+	// Pakete und Zeiträume auslesen
+	$levels = get_site_option('psts_levels');
+	$periods = $psts->get_setting('enabled_periods', array(1,3,12));
+	?>
+
+	<div class="stripe-price-ids">
+		<h3><?php esc_html_e('Stripe Price-IDs für alle Pakete und Zeiträume', 'psts'); ?></h3>
+		<table class="form-table">
+			<tr>
+				<th><?php esc_html_e('Paket', 'psts'); ?></th>
+				<th><?php esc_html_e('Zeitraum', 'psts'); ?></th>
+				<th><?php esc_html_e('Stripe Price-ID', 'psts'); ?></th>
+			</tr>
+			<?php foreach ($levels as $level_id => $level): ?>
+				<?php foreach ($periods as $period): 
+					$field_name = 'stripe_price_id_' . $level_id . '_' . $period;
+					?>
+					<tr>
+						<td><?php echo esc_html($level['name']); ?></td>
+						<td><?php echo esc_html($period . ' ' . _n('Monat', 'Monate', $period, 'psts')); ?></td>
+						<td>
+							<input type="text"
+								name="psts[<?php echo esc_attr($field_name); ?>]"
+								value="<?php echo esc_attr($psts->get_setting($field_name)); ?>"
+								size="32"
+								placeholder="z.B. price_1NABCDEF..." />
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+		</table>
+		<p class="description">
+			<?php esc_html_e('Lege für jede Paket-/Zeitraum-Kombination im Stripe-Dashboard einen Preis (Price) an und trage die zugehörige Price-ID hier ein. Ohne gültige Price-ID funktioniert Stripe-Checkout nicht!', 'psts'); ?>
+			<br>
+			<a href="https://dashboard.stripe.com/products" target="_blank">Stripe Dashboard öffnen</a>
+		</p>
+	</div>
 </div>

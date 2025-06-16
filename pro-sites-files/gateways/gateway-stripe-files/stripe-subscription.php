@@ -64,7 +64,7 @@ class ProSites_Stripe_Subscription {
 	 * Create new subscription for a customer.
 	 *
 	 * @param string $customer_id Customer ID.
-	 * @param string $plan_id     Plan ID.
+	 * @param string $price_id    Price ID (statt Plan ID!).
 	 * @param array  $args        Array of fields to set.
 	 * @param bool   $error       Should add the errors?.
 	 *
@@ -72,55 +72,42 @@ class ProSites_Stripe_Subscription {
 	 *
 	 * @return \Stripe\Subscription|false Created subscription object or false.
 	 */
-	public function create_subscription( $customer_id, $plan_id, $args = array(), $error = false ) {
-		// Make sure we don't break.
+	public function create_subscription( $customer_id, $price_id, $args = array(), $error = false ) {
 		try {
-			// Make sure we have a working plan.
-			$plan = ProSites_Gateway_Stripe::$stripe_plan->get_plan( $plan_id );
-			// Make sure we have a valid customer.
 			$customer = ProSites_Gateway_Stripe::$stripe_customer->get_customer( $customer_id );
-			// Create subscription if we have a valid customer and plan.
-			if ( $plan && $customer ) {
-				// Set default arguments.
+			if ( $customer ) {
 				$sub_args = array(
 					'customer' => $customer_id,
 					'items'    => array(
 						array(
-							'plan' => $plan_id,
+							'price' => $price_id, // NEU: Price statt Plan!
 						),
 					),
 				);
 
-				// Do not make plan conflicts.
-				if ( isset( $args['plan'] ) ) {
-					unset( $args['plan'] );
+				// PaymentMethod als default setzen, falls vorhanden
+				if ( !empty( $args['default_payment_method'] ) ) {
+					$sub_args['default_payment_method'] = $args['default_payment_method'];
+					unset( $args['default_payment_method'] );
 				}
 
-				// Assign each args to subscription fields array.
-				if ( ! empty( $args ) ) {
-					foreach ( $args as $key => $value ) {
-						$sub_args[ $key ] = $value;
-					}
+				// Zusätzliche Argumente übernehmen
+				foreach ( $args as $key => $value ) {
+					$sub_args[ $key ] = $value;
 				}
-				// Let's create a subscription now.
+
 				$subscription = \Stripe\Subscription::create( $sub_args );
-				// Set to cache so we can reuse it.
 				ProSites_Helper_Cache::set_cache( 'pro_sites_stripe_subscription_' . $subscription->id, $subscription, 'psts' );
 			} else {
 				$subscription = false;
 			}
 		} catch ( \Exception $e ) {
-			// Log error message.
 			ProSites_Gateway_Stripe::error_log( $e->getMessage() );
-
-			// Let the user know what happened.
 			if ( $error ) {
 				$GLOBALS['psts']->errors->add( 'stripe', $e->getMessage() );
 			}
-
 			$subscription = false;
 		}
-
 		return $subscription;
 	}
 
@@ -300,7 +287,7 @@ class ProSites_Stripe_Subscription {
 	 *
 	 * @param int         $blog_id     Blog ID.
 	 * @param string      $customer_id Customer ID.
-	 * @param string|bool $plan_id     Plan ID or false if plan id is in arguments.
+	 * @param string|bool $price_id     Plan ID or false if plan id is in arguments.
 	 * @param array       $args        Arguments for subscription.
 	 * @param string      $desc        Description for log.
 	 * @param string|bool $card        Card id for the payment (if empty default card will be used).
@@ -309,7 +296,7 @@ class ProSites_Stripe_Subscription {
 	 *
 	 * @return bool|Stripe\Subscription
 	 */
-	public function set_blog_subscription( $blog_id, $customer_id, $plan_id = false, $args = array(), $desc = '', $card = false ) {
+	public function set_blog_subscription( $blog_id, $customer_id, $price_id = false, $args = array(), $desc = '', $card = false ) {
 		global $psts;
 
 		// Get the subscription id for the email/blog id.
@@ -319,14 +306,14 @@ class ProSites_Stripe_Subscription {
 		$subscription = $this->get_subscription( $subscription_id );
 
 		// Make sure plan id is set.
-		$plan_id = $this->set_plan_id( $plan_id, $args );
+		$price_id = $this->set_plan_id( $price_id, $args );
 
 		// Try to generate arguments if missing.
 		$args = $this->subscription_args( $blog_id, $args );
 
-		// Set default payment source.
+		// Set default payment method.
 		if ( ! empty( $card ) ) {
-			$args['default_source'] = $card;
+			$args['default_payment_method'] = $card;
 		}
 
 		// Subscription does not exist or cancelled, so create new.
@@ -341,7 +328,7 @@ class ProSites_Stripe_Subscription {
 			}
 
 			// Now let's create new subscription.
-			$subscription = $this->create_subscription( $customer_id, $plan_id, $args, true );
+			$subscription = $this->create_subscription( $customer_id, $price_id, $args, true );
 
 			// New subscription created.
 			if ( ! empty( $subscription->id ) ) {
@@ -363,15 +350,11 @@ class ProSites_Stripe_Subscription {
 
 			$plan_changed = false;
 
-			// We have an active subscription, so update to new plan.
-			$args['plan'] = $plan_id;
-
-			// Get the existing plan id.
-			$existing_plan = $subscription->plan->id;
+			$existing_price_id = $subscription->items->data[0]->price->id ?? null;
 
 			// If we are changing plans.
-			if ( $plan_id !== $existing_plan ) {
-				$plan_changed = true;
+			if ( $price_id !== $existing_price_id ) {
+    			$plan_changed = true;
 				// Update meta for plan change.
 				if ( isset( $args['metadata'] ) ) {
 					$args['metadata']['plan_change'] = 'yes';
@@ -604,23 +587,23 @@ class ProSites_Stripe_Subscription {
 	 * If plan id is not given directly, get from
 	 * the arguments.
 	 *
-	 * @param bool  $plan_id Plan ID or false.
+	 * @param bool  $price_id Plan ID or false.
 	 * @param array $args    Arguments.
 	 *
 	 * @since 3.6.1
 	 *
 	 * @return bool|string
 	 */
-	private function set_plan_id( $plan_id = false, $args = array() ) {
+	private function set_plan_id( $price_id = false, $args = array() ) {
 		// If plan id is not set, try to generate using arguments.
-		if ( empty( $plan_id ) && ! empty( $args['level'] ) && ! empty( $args['period'] ) ) {
-			$plan_id = ProSites_Gateway_Stripe::$stripe_plan->get_id(
+		if ( empty( $price_id ) && ! empty( $args['level'] ) && ! empty( $args['period'] ) ) {
+			$price_id = ProSites_Gateway_Stripe::$stripe_plan->get_id(
 				$args['level'],
 				$args['period']
 			);
 		}
 
-		return $plan_id;
+		return $price_id;
 	}
 
 	/**
@@ -759,13 +742,10 @@ class ProSites_Stripe_Subscription {
 				// Get Stripe customer.
 				$subscription = $this->get_subscription( $sub_id );
 
-				// If a default source is set, get the card data.
-				if ( ! empty( $subscription->default_source ) && isset( $subscription->customer ) ) {
-					// Get the card details.
-					$card = ProSites_Gateway_Stripe::$stripe_customer->get_card(
-						$subscription->default_source,
-						$subscription->customer
-					);
+				// If a default payment method is set, get the card data.
+				if ( ! empty( $subscription->default_payment_method ) && isset( $subscription->customer ) ) {
+					// Get the payment method details.
+					$card = \Stripe\PaymentMethod::retrieve( $subscription->default_payment_method );
 
 					// Set to cache.
 					if ( ! empty( $card ) ) {

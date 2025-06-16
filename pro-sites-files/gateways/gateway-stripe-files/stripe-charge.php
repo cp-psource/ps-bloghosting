@@ -106,20 +106,16 @@ class ProSites_Stripe_Charge {
 	/**
 	 * Create an invoice-item or charge in Stripe.
 	 *
-	 * Create an invoice item or charge against a customer.
-	 *
 	 * @param string $customer_id Customer ID.
 	 * @param int    $amount      Total amount.
 	 * @param string $type        charge or invoiceitem.
 	 * @param string $desc        Description.
-	 * @param array  $args        Additional arguments
-	 *                            (https://stripe.com/docs/api/charges/create?lang=php,
-	 *                            https://stripe.com/docs/api/invoiceitems/create?lang=php).
+	 * @param array  $args        Additional arguments.
 	 * @param bool   $error       Should add the errors?.
 	 *
 	 * @since 3.6.1
 	 *
-	 * @return bool|\Stripe\InvoiceItem|\Stripe\Charge
+	 * @return bool|\Stripe\InvoiceItem|\Stripe\PaymentIntent
 	 */
 	public function create_item( $customer_id, $amount, $type = 'charge', $desc = '', $args = array(), $error = false ) {
 		// Make sure arguments are array.
@@ -133,28 +129,26 @@ class ProSites_Stripe_Charge {
 			$args['description'] = $desc;
 		}
 
-		// Make sure we don't break.
 		try {
-			// If a charge.
 			if ( 'charge' === $type ) {
-				$charge = \Stripe\Charge::create( $args );
+				// PaymentIntent statt Charge!
+				// ACHTUNG: payment_method muss im $args übergeben werden!
+				$args['confirm'] = true;
+				$payment_intent = \Stripe\PaymentIntent::create( $args );
+				$result = $payment_intent;
 			} else {
-				// Let's create a subscription now.
-				$charge = \Stripe\InvoiceItem::create( $args );
+				// InvoiceItem bleibt wie gehabt.
+				$result = \Stripe\InvoiceItem::create( $args );
 			}
 		} catch ( \Exception $e ) {
-			// Log error message.
 			ProSites_Gateway_Stripe::error_log( $e->getMessage() );
-
-			// Let the user know what happened.
 			if ( $error ) {
 				$GLOBALS['psts']->errors->add( 'stripe', $e->getMessage() );
 			}
-
-			$charge = false;
+			$result = false;
 		}
 
-		return $charge;
+		return $result;
 	}
 
 	/**
@@ -321,38 +315,31 @@ class ProSites_Stripe_Charge {
 	}
 
 	/**
-	 * Create a new card source for the customer.
+	 * Fügt eine neue PaymentMethod (Karte) zum Kunden hinzu.
 	 *
-	 * We will create a new card from the given source and
-	 * attach to the customer.
-	 *
-	 * @param string          $token    Token for source.
-	 * @param Stripe\Customer $customer Customer object.
+	 * @param string          $payment_method_id PaymentMethod-ID.
+	 * @param \Stripe\Customer $customer         Stripe-Kundenobjekt.
 	 *
 	 * @since 3.6.1
 	 *
-	 * @return bool|Stripe\Card
+	 * @return bool|\Stripe\PaymentMethod
 	 */
-	public function create_card( $token, $customer ) {
-		// Do not continue if we don't have a valid customer or token.
-		if ( ! isset( $customer->sources ) || empty( $token ) ) {
+	public function create_card( $payment_method_id, $customer ) {
+		// Prüfen, ob Customer und PaymentMethod-ID vorhanden sind.
+		if ( empty( $customer->id ) || empty( $payment_method_id ) ) {
 			return false;
 		}
 
-		// Make sure we don't break.
 		try {
-			// Create new card.
-			$card = $customer->sources->create( array(
-				'source' => $token,
-			) );
+			// PaymentMethod an den Kunden anhängen.
+			$payment_method = \Stripe\PaymentMethod::retrieve( $payment_method_id );
+			$payment_method->attach(['customer' => $customer->id]);
 		} catch ( \Exception $e ) {
-			// Log error message.
 			ProSites_Gateway_Stripe::error_log( $e->getMessage() );
-
-			$card = false;
+			return false;
 		}
 
-		return $card;
+		return $payment_method;
 	}
 
 	/**

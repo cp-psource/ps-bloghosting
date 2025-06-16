@@ -139,49 +139,36 @@ class ProSites_Stripe_Customer {
 	 *
 	 * @return \Stripe\Customer|false
 	 */
-	public function create_customer( $email, $source, $check_existing = false ) {
+	public function create_customer( $email, $payment_method_id, $check_existing = false ) {
 		global $psts;
 
-		// If a customer exist in Stripe with same email, get that.
 		if ( $check_existing ) {
-			// Get the first customer using email.
 			$customer = $this->list_customers( $email, 1 );
-
-			// If found, return that.
 			if ( ! empty( $customer ) ) {
 				return $customer;
 			}
 		}
 
-		// Get the main site details.
 		$site_name = get_blog_details( 1 )->blogname;
 
-		// Customer arguments.
 		$args = array(
 			'email'       => $email,
-			'source'      => $source,
+			'payment_method' => $payment_method_id, // NEU!
 			'description' => $site_name,
+			'invoice_settings' => [ 'default_payment_method' => $payment_method_id ],
 		);
 
-		// Get WP user by email.
 		$user = get_user_by( 'email', $email );
-		// Set a custom description if we can.
 		if ( ! empty( $user ) ) {
-			// translators: %1$s Site name, %2$s User's display name.
 			$args['description'] = sprintf( __( '%1$s user - %2$s ', 'psts' ), $site_name, $user->display_name );
-			// Set username to meta.
 			$args['metadata']['user'] = $user->user_login;
 		}
 
-		// Make sure we don't break.
 		try {
-			// Let's create a customer now.
-			$customer = Stripe\Customer::create( $args );
-			// Set to cache so we can reuse it.
+			$customer = \Stripe\Customer::create( $args );
 			ProSites_Helper_Cache::set_cache( 'pro_sites_stripe_customer_' . $customer->id, $customer, 'psts' );
 		} catch ( \Exception $e ) {
 			$customer = false;
-			// Oh well.
 			$psts->errors->add(
 				'stripe',
 				__( 'The Stripe customer could not be created. Please try again.', 'psts' )
@@ -300,12 +287,20 @@ class ProSites_Stripe_Customer {
 				// Get Stripe customer.
 				$customer = $this->get_customer( $customer_id );
 
-				if ( ! empty( $customer->default_source ) ) {
-					// Default card.
-					$card = $customer->sources->retrieve( $customer->default_source );
+				if ( ! empty( $customer->invoice_settings->default_payment_method ) ) {
+					// Default PaymentMethod abrufen
+					$payment_method = \Stripe\PaymentMethod::retrieve(
+						$customer->invoice_settings->default_payment_method
+					);
 
 					// Set to cache.
-					ProSites_Helper_Cache::set_cache( 'pro_sites_stripe_default_card_' . $customer_id, $card, 'psts' );
+					ProSites_Helper_Cache::set_cache(
+						'pro_sites_stripe_default_card_' . $customer_id,
+						$payment_method,
+						'psts'
+					);
+
+					$card = $payment_method;
 				}
 			} catch ( \Exception $e ) {
 				// Log error message.
@@ -541,55 +536,52 @@ class ProSites_Stripe_Customer {
 	/**
 	 * Create a customer in Stripe for the blog.
 	 *
-	 * @param string      $email        Email address.
-	 * @param string      $blog_id      Blog ID.
-	 * @param string|bool $token        Stripe token.
-	 * @param bool        $default_card Make it default card?.
-	 * @param bool        $card         Card id.
+	 * @param string      $email              Email address.
+	 * @param string      $blog_id            Blog ID.
+	 * @param string|bool $payment_method_id  PaymentMethod-ID.
+	 * @param bool        $default_card       Make it default card?.
+	 * @param bool        $card               PaymentMethod-ID (per Reference).
 	 *
 	 * @since 3.6.1
 	 *
 	 * @return \Stripe\Customer|false
 	 */
-	public function set_blog_customer( $email, $blog_id, $token = false, $default_card = true, &$card = false ) {
+	public function set_blog_customer( $email, $blog_id, $payment_method_id = false, $default_card = true, &$card = false ) {
 		global $psts;
 
-		// If wed don't have a blog id, get the Stripe customer id.
+		// Wenn wir keine Blog-ID haben, Stripe-Kunde über E-Mail suchen
 		if ( empty( $blog_id ) ) {
-			// Get Stripe data from db using email.
 			$db_customer = $this->get_db_customer( false, $email );
 		} else {
-			// Get the Stripe details using blog id.
 			$db_customer = $this->get_db_customer( $blog_id );
 		}
 
-		// If no customer is found, create new.
+		// Wenn Kunde existiert, ggf. PaymentMethod anhängen
 		if ( ! empty( $db_customer->customer_id ) ) {
-			// Try to get the Stripe customer.
 			$customer = $this->get_customer( $db_customer->customer_id );
 
-			// If an existing customer add new card.
-			if ( $customer && ! empty( $token ) ) {
-				// Attache new card to customer.
-				$card = ProSites_Gateway_Stripe::$stripe_charge->create_card( $token, $customer );
-				// Make this card as customer's default source.
-				if ( ! empty( $card->id ) && $default_card ) {
-					$customer = $this->update_customer( $customer->id, array(
-						'default_source' => $card->id,
-					) );
+			if ( $customer && ! empty( $payment_method_id ) ) {
+				// PaymentMethod anhängen
+				$payment_method = \Stripe\PaymentMethod::retrieve( $payment_method_id );
+				$payment_method->attach(['customer' => $customer->id]);
 
-					// We need only card id.
-					$card = $card->id;
+				// Als Standard setzen, falls gewünscht
+				if ( $default_card ) {
+					$customer = $this->update_customer( $customer->id, array(
+						'invoice_settings' => [ 'default_payment_method' => $payment_method_id ],
+					) );
 				}
+
+				$card = $payment_method_id;
 			}
-		} elseif ( ! empty( $token ) ) {
-			// Try to create a Stripe customer.
-			$customer = $this->create_customer( $email, $token );
+		} elseif ( ! empty( $payment_method_id ) ) {
+			// Stripe-Kunde neu anlegen und PaymentMethod zuweisen
+			$customer = $this->create_customer( $email, $payment_method_id );
+			$card = $payment_method_id;
 		} else {
 			$customer = false;
 		}
 
-		// If we could not create/update a customer, add to errors.
 		if ( empty( $customer ) ) {
 			$psts->errors->add( 'general', __( 'Unable to Create/Retrieve Stripe Customer.', 'psts' ) );
 		}

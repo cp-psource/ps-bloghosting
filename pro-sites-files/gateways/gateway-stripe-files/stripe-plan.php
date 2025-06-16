@@ -35,16 +35,16 @@ class ProSites_Stripe_Plan {
 		);
 
 		// Joing site url, level and period.
-		$plan_id = $uid . '_' . $level . '_' . $period;
+		$price_id = $uid . '_' . $level . '_' . $period;
 
 		/**
 		 * Make plan ID filterable.
 		 *
-		 * @param string $plan_id Plan ID.
+		 * @param string $price_id Plan ID.
 		 *
 		 * @since 3.6.1
 		 */
-		return apply_filters( 'pro_sites_stripe_plan_id', $plan_id );
+		return apply_filters( 'pro_sites_stripe_plan_id', $price_id );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class ProSites_Stripe_Plan {
 	 *
 	 * @return \Stripe\Plan|false
 	 */
-	public function get_plan( $id, $force = false ) {
+	public function get_price( $id, $force = false ) {
 		// If forced, use API.
 		if ( $force ) {
 			// Make sure we don't break.
@@ -79,7 +79,7 @@ class ProSites_Stripe_Plan {
 			}
 		} else {
 			// Get all plans.
-			$plans = $this->get_plans();
+			$plans = $this->get_prices();
 
 			// If no plans found, bail.
 			if ( empty( $plans ) ) {
@@ -112,43 +112,31 @@ class ProSites_Stripe_Plan {
 	 *
 	 * @return \Stripe\Plan|false Created plan object or false.
 	 */
-	public function create_plan( $level, $period, $name, $price, $product_name, $product_id = '', $interval = 'month' ) {
+	public function create_price( $level, $period, $name, $price, $product_name, $product_id = '', $interval = 'month' ) {
 		global $psts;
 
-		// Get our custom plan id.
-		$plan_id = $this->get_id( $level, $period );
-		// Get current currency.
+		// Produkt anlegen (nur einmal pro Produkt nötig)
+		if ( empty( $product_id ) ) {
+			$product = \Stripe\Product::create([
+				'name' => $product_name,
+			]);
+			$product_id = $product->id;
+		}
+
+		// Preis anlegen
 		$currency = $psts->get_setting( 'currency', 'USD' );
+		$price_obj = \Stripe\Price::create([
+			'unit_amount' => ProSites_Gateway_Stripe::format_price( $price ),
+			'currency' => $currency,
+			'recurring' => [
+				'interval' => $interval,
+				'interval_count' => $period,
+			],
+			'product' => $product_id,
+			'nickname' => $name,
+		]);
 
-		// Setup the plan data.
-		$plan = array(
-			'id'             => $plan_id,
-			'amount'         => ProSites_Gateway_Stripe::format_price( $price ),
-			'currency'       => $currency,
-			'interval'       => $interval,
-			'interval_count' => $period,
-			'nickname'       => $name,
-		);
-
-		// If product is found, assign that.
-		if ( ! empty( $product_id ) ) {
-			$plan['product'] = $product_id;
-		} else {
-			$plan['product']['name'] = $product_name;
-		}
-
-		// Make sure we don't break anything.
-		try {
-			// Call the API and create the plan.
-			$plan = Stripe\Plan::create( $plan );
-		} catch ( \Exception $e ) {
-			// Log error message.
-			ProSites_Gateway_Stripe::error_log( $e->getMessage() );
-
-			$plan = false;
-		}
-
-		return $plan;
+		return $price_obj;
 	}
 
 	/**
@@ -164,7 +152,7 @@ class ProSites_Stripe_Plan {
 	 */
 	public function update_plan( $id, $args = array() ) {
 		// Try to get the plan.
-		$plan = $this->get_plan( $id );
+		$plan = $this->get_price( $id );
 
 		/**
 		 * Filter to allow more fields to update.
@@ -219,7 +207,7 @@ class ProSites_Stripe_Plan {
 		// Make sure we don't break.
 		try {
 			// First get the plan.
-			$plan = $this->get_plan( $id );
+			$plan = $this->get_price( $id );
 
 			// Get the product id.
 			$product = empty( $plan->product ) ? false : $plan->product;
@@ -256,7 +244,7 @@ class ProSites_Stripe_Plan {
 	 *
 	 * @return array Array of Stripe plan objects.
 	 */
-	public function get_plans( $limit = 100, $force = false ) {
+	public function get_prices( $limit = 100, $force = false ) {
 		// Plans array.
 		$plans = array();
 
@@ -267,7 +255,7 @@ class ProSites_Stripe_Plan {
 		 *
 		 * @since 3.6.1
 		 */
-		$limit = (int) apply_filters( 'pro_sites_stripe_get_plans_limit', $limit );
+		$limit = (int) apply_filters( 'pro_sites_stripe_get_prices_limit', $limit );
 
 		// If not forced, try to get from cache.
 		if ( ! $force ) {
@@ -484,10 +472,10 @@ class ProSites_Stripe_Plan {
 		// Go through each period.
 		foreach ( array( 1, 3, 12 ) as $period ) {
 			// Get Stripe plan id.
-			$plan_id = $this->get_id( $level, $period );
+			$price_id = $this->get_id( $level, $period );
 
 			// Delete the plan and product.
-			$this->delete_plan( $plan_id, 12 === $period );
+			$this->delete_plan( $price_id, 12 === $period );
 		}
 
 		// We need to clear the cache.
@@ -554,13 +542,13 @@ class ProSites_Stripe_Plan {
 		// Loop through each plans.
 		foreach ( $plans as $period => $plan ) {
 			// Get the custom plan id.
-			$plan_id = $this->get_id( $level_id, $period );
+			$price_id = $this->get_id( $level_id, $period );
 
 			// Product name is our level name.
 			$product_name = $level['name'];
 
 			// Try to get the Stripe plan.
-			$stripe_plan = $this->get_plan( $plan_id );
+			$stripe_plan = $this->get_price( $price_id );
 
 			// If we have product already.
 			if ( empty( $product_id ) && ! empty( $stripe_plan->product ) ) {
@@ -593,7 +581,7 @@ class ProSites_Stripe_Plan {
 				 * we will use same product for all plans in a level.
 				 */
 				if ( ! empty( $stripe_plan->product ) && $product_id !== $stripe_plan->product ) {
-					$this->update_plan( $plan_id, array(
+					$this->update_plan( $price_id, array(
 						'product' => $product_id,
 					) );
 				}
@@ -605,7 +593,7 @@ class ProSites_Stripe_Plan {
 				     strtolower( $stripe_plan->currency ) !== strtolower( $currency )
 				) {
 					// Delete the plan.
-					$this->delete_plan( $plan_id );
+					$this->delete_plan( $price_id );
 					$create_new = true;
 				} elseif ( $plan['desc'] !== $stripe_plan->nickname ) {
 					/**
@@ -613,7 +601,7 @@ class ProSites_Stripe_Plan {
 					 * You can not update name when switching the product of a plan.
 					 * So we need to update the name of the plan separately.
 					 */
-					$this->update_plan( $plan_id, array(
+					$this->update_plan( $price_id, array(
 						'nickname' => $plan['desc'],
 					) );
 				}
